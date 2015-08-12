@@ -1,0 +1,15 @@
+Package: ComputeTE
+Type: Package
+Title: The transfer entropy Package
+Version: 1.0
+Date: TODO
+Author: Your Name
+Maintainer: Your Name <your@email.com>
+Description: TODO
+License: GPL (>= 2)
+Imports: Rcpp (>= 0.11.6)
+LinkingTo: Rcpp
+URL: TODO
+NeedsCompilation: yes?
+Repository: TODO
+Date/Publication: TODO

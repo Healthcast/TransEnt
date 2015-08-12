@@ -1,0 +1,3 @@
+useDynLib(ComputeTE)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
