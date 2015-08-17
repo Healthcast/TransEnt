@@ -31,7 +31,7 @@ const size_t SUCCESS = 0;
 const size_t ERROR_UNHANDLED_EXCEPTION = 2;
 
 
-/* USED FOR DEBUGGING
+///* USED FOR DEBUGGING
    FILE* pFilexky = fopen("xky.space","w");
    FILE* pFilex   = fopen("x.space","w");
    FILE* pFileky  = fopen("ky.space","w");
@@ -61,24 +61,24 @@ int MakeSpaces(const vector<double>&X,const vector<double>&Y,int embedding,
   for(int i=embedding;i<X.size();i++){
 	if(i>Y.size())	break;
     int t=0;
-    //fprintf(pFilex,"%f\n",X[i]);
-    xkyPts[nPts][t]=X[i];//fprintf(pFilexky,"%f,",X[i]);
-    xkPts[nPts][t]=X[i];//fprintf(pFilexk,"%f,",X[i]);
+    if(DEBUG)	fprintf(pFilex,"%f\n",X[i]);
+    xkyPts[nPts][t]=X[i];if(DEBUG)	fprintf(pFilexky,"%f,",X[i]);
+    xkPts[nPts][t]=X[i];if(DEBUG)	fprintf(pFilexk,"%f,",X[i]);
     t++;
     for(int j=1;j<=embedding;j++){//k
-      xkyPts[nPts][t]=X[i-j];//fprintf(pFilexky,"%f,",X[i-j]);
-      xkPts[nPts][t]=X[i-j];//fprintf(pFilexk,"%f,",X[i-j]);
-      kyPts[nPts][t-1]=X[i-j];//fprintf(pFileky,"%f,",X[i-j]);
-      kPts[nPts][t-1]=X[i-j];//fprintf(pFilek,"%f,",X[i-j]);
+      xkyPts[nPts][t]=X[i-j];if(DEBUG)	fprintf(pFilexky,"%f,",X[i-j]);
+      xkPts[nPts][t]=X[i-j];if(DEBUG)	fprintf(pFilexk,"%f,",X[i-j]);
+      kyPts[nPts][t-1]=X[i-j];if(DEBUG)	fprintf(pFileky,"%f,",X[i-j]);
+      kPts[nPts][t-1]=X[i-j];if(DEBUG)	fprintf(pFilek,"%f,",X[i-j]);
       t++;
     }
-    xkyPts[nPts][t]=Y[i-1];//fprintf(pFilexky,"%f,",Y[i-1]);
-    kyPts[nPts][t-1]=Y[i-1];//fprintf(pFileky,"%f,",Y[i-1]);
+    xkyPts[nPts][t]=Y[i-1];if(DEBUG)	fprintf(pFilexky,"%f,",Y[i-1]);
+    kyPts[nPts][t-1]=Y[i-1];if(DEBUG)	fprintf(pFileky,"%f,",Y[i-1]);
     nPts++;
-    //fprintf(pFilexky,"\n");
-    //fprintf(pFilexk,"\n");
-    //fprintf(pFileky,"\n");
-    //fprintf(pFilek,"\n");
+    if(DEBUG)	fprintf(pFilexky,"\n");
+    if(DEBUG)	fprintf(pFilexk,"\n");
+    if(DEBUG)	fprintf(pFileky,"\n");
+    if(DEBUG)	fprintf(pFilek,"\n");
   }
 
   xkykdTree = new ANNkd_tree(xkyPts, nPts, dimxky);
@@ -169,7 +169,6 @@ int countByDistanceView(ANNkd_tree* kdTree, ANNpoint Pt, double Distance)
 }
 
 // The count is the number of points less than or equal to the distance
-//TODO: the self count is false so the point itself is not counted ?
 int countByDistance(ANNkd_tree* kdTree, ANNpoint Pt, double Distance)
 {
   int cnt= kdTree->annkFRSearch(Pt,				// query point
@@ -259,8 +258,8 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
     ANNidx idx=kthNeighbor(xkykdTree, k, xkyPts[i]);
     // compute X distance and KY distance
     // ASSUMES points are x, k1,k2,..kn, y
-    xdistXKY=abs(xkyPts[i][0] - xkyPts[idx][0]);
-    kydist=abs(xkyPts[i][1] - xkyPts[idx][1]);
+    xdistXKY= abs(xkyPts[i][0] - xkyPts[idx][0]);
+    kydist= abs(xkyPts[i][1] - xkyPts[idx][1]);
     for(int j=2;j<dimxky;j++){
       tmpdist=abs(xkyPts[i][j] - xkyPts[idx][j]);
       if(tmpdist>kydist){ kydist=tmpdist; }
@@ -279,13 +278,15 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
       cout<<"\n\t"<<endl;
       for(int j=1;j<dimxky;j++){ cout<<xkyPts[idx][j]<<"\t"; }
       cout<<"\n\t"<<endl;
+      //TODO handle exit
     }
     if(kdist==0){
-      cout<<"ky crashing at "<<i<<", "<<idx<<"\n\t"<<endl;
+      cout<<"k crashing at "<<i<<", "<<idx<<"\n\t"<<endl;
       for(int j=1;j<dimxk;j++){ cout<<xkPts[i][j]<<"\t"; }
       cout<<"\n\t"<<endl;
       for(int j=1;j<dimxk;j++){ cout<<xkPts[idx][j]<<"\t"; }
       cout<<"\n\t"<<endl;
+      //TODO handle exit
     }
     // Count the number of points in X subspace within these distances
     // since this is a 1-d space, ASSUMING faster by a loop than by
@@ -293,8 +294,8 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
     fooCnt=0; barCnt=0;
     for(int j=embedding;j<X.size();j++){
       // NOTE! less than or equal to (<=)
-      if(abs(xkyPts[i][0] - X[j]) <= xdistXKY) fooCnt++;
-      if(abs(xkPts[i][0]  - X[j]) <= xdistXK ) barCnt++;
+      if( (abs(xkyPts[i][0] - X[j]) <= xdistXKY) && (abs(xkyPts[i][0] - X[j])!=0) ) fooCnt++;
+      if( (abs(xkPts[i][0]  - X[j]) <= xdistXK ) && (abs(xkPts[i][0]  - X[j])!=0) ) barCnt++;
     }
     //avDist += fooCnt; avD2 += barCnt; // DEBUG
     cntX  += digamma(fooCnt); // and sum the digamma of the counts
@@ -436,8 +437,8 @@ int foo=0;
 void addNoiseData(vector<double>&X,vector<double>&Y)
 {
 	std::srand (std::time(NULL));
-	for(int i=0;i<X.size();i++)	X[i]+= ((std::rand()%89999 + 10000)/ 1000000000.0);
-	for(int i=0;i<Y.size();i++)	Y[i]+= ((std::rand()%89999 + 10000)/ 1000000000.0);
+	for(int i=0;i<X.size();i++)	X[i]+= ((std::rand()%999 + 1)/ 10000000000.0);
+	for(int i=0;i<Y.size();i++)	Y[i]+= ((std::rand()%999 + 1)/ 10000000000.0);
 }
 
 /**
@@ -617,6 +618,8 @@ int main(int argc, char** argv)
 	  makeXY(data,X,Y);
 	  compute_TE(TE, X, Y, lookBack, k, method,corDist,addNoise);
 	  if(VERBOSE){ cout<<method<<" X,Y: "<<TE<<endl; }
+	  compute_TE(TE, Y, X, lookBack, k, method,corDist,addNoise);
+	  if(VERBOSE){ cout<<method<<" Y,X: "<<TE<<endl; }
   }
   catch(invalid_argument& e)
   {
