@@ -31,8 +31,12 @@ ComputeTE <- function(X, Y, embedding, k, method="MI_diff", epsDist=-1) {
 #Other parameter check:
   if( embedding%%1 != 0 || embedding <= 0 )
 	  stop("Embedding should be greater than zero")
+  if( embedding > sqrt(length(X)) )
+    warning("Embedding is big may not be sensible")
   if( k%%1 != 0 || k <= 0 )
 	  stop("k (neighbor) should be greater than zero")
+  if( k > sqrt(length(X)) )
+    warning("k is big may not be sensible")
   if( length(X) != length(Y))
     stop("X and Y should have the same length")
   
