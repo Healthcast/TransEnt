@@ -22,7 +22,20 @@
 #' @seealso TODO arbitrary
 #' @aliases te transferentropy transfer-entropy
 #' 
-##TODO @examples 
+#' @examples 
+#' X <- rep(0,10000+1)
+#' Y <- rep(0,10000+1)
+#' for(i in 1:10000){
+#'   Y[i+1] <- 0.5*Y[i] + rnorm(1)
+#'   X[i+1] <- 0.6*X[i] + 0.5*Y[i] + rnorm(1)
+#' }
+#' ComputeTE(X,Y,3,1,"MI_diff")
+#' ComputeTE(Y,X,3,1,"MI_diff")
+#' ComputeTE(X,Y,1,1,"Correlation")
+#' ComputeTE(Y,X,1,1,"Correlation")
+#' ComputeTE(X,Y,3,1,"Correlation",0.5)
+#' 
+
 ComputeTE <- function(X, Y, embedding, k, method="MI_diff", epsDist=-1) {
   methods = c("correlation","mi_diff")
   method = charmatch(tolower(method),methods)

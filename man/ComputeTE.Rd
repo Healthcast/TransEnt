@@ -34,6 +34,19 @@ the random process \code{X} with specified \code{embedding} dimension and \code{
 k nearest neibor search used in the estimation given a \code{method} from provided methods in this package.
 TODO: fix details (talk about adding noise somewhere)
 }
+\examples{
+X <- rep(0,10000+1)
+Y <- rep(0,10000+1)
+for(i in 1:10000){
+  Y[i+1] <- 0.5*Y[i] + rnorm(1)
+  X[i+1] <- 0.6*X[i] + 0.5*Y[i] + rnorm(1)
+}
+ComputeTE(X,Y,3,1,"MI_diff")
+ComputeTE(Y,X,3,1,"MI_diff")
+ComputeTE(X,Y,1,1,"Correlation")
+ComputeTE(Y,X,1,1,"Correlation")
+ComputeTE(X,Y,3,1,"Correlation",0.5)
+}
 \seealso{
 TODO arbitrary
 }

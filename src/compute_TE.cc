@@ -31,13 +31,13 @@ const size_t SUCCESS = 0;
 const size_t ERROR_UNHANDLED_EXCEPTION = 2;
 
 
-///* USED FOR DEBUGGING
-   FILE* pFilexky = fopen("xky.space","w");
-   FILE* pFilex   = fopen("x.space","w");
-   FILE* pFileky  = fopen("ky.space","w");
-   FILE* pFilexk  = fopen("xk.space","w");
-   FILE* pFilek   = fopen("k.space","w");
-//*/
+FILE *pFilexky, *pFilex, *pFileky, *pFilexk, *pFilek;
+
+//TODO:
+int safetyCheck()
+{
+	return 0;
+}
 
 // make spaces xky, ky, xk, k
 int MakeSpaces(const vector<double>&X,const vector<double>&Y,int embedding,
@@ -46,6 +46,14 @@ int MakeSpaces(const vector<double>&X,const vector<double>&Y,int embedding,
 	       ANNkd_tree* &xkykdTree,ANNkd_tree* &kykdTree,
 	       ANNkd_tree* &xkkdTree,ANNkd_tree* &kkdTree)
 {
+  if(DEBUG)
+  {
+     pFilexky = fopen("xky.space","w");
+     pFilex   = fopen("x.space","w");
+     pFileky  = fopen("ky.space","w");
+     pFilexk  = fopen("xk.space","w");
+     pFilek   = fopen("k.space","w");
+  }
   int maxPts =  X.size()+1;						   //max number of points
   int nPts   =  0;
   int dimxky =  embedding + 2,
@@ -80,8 +88,12 @@ int MakeSpaces(const vector<double>&X,const vector<double>&Y,int embedding,
     if(DEBUG)	fprintf(pFileky,"\n");
     if(DEBUG)	fprintf(pFilek,"\n");
   }
-
+  cout<<"npts: "<<nPts<<endl;
   xkykdTree = new ANNkd_tree(xkyPts, nPts, dimxky);
+  for(int i=0;i<nPts;i++)
+  {
+
+  }
   kykdTree  = new ANNkd_tree(kyPts, nPts, dimky);
   xkkdTree  = new ANNkd_tree(xkPts, nPts, dimxk);
   kkdTree   = new ANNkd_tree(kPts, nPts, dimk);
@@ -618,8 +630,8 @@ int main(int argc, char** argv)
 	  makeXY(data,X,Y);
 	  compute_TE(TE, X, Y, lookBack, k, method,corDist,addNoise);
 	  if(VERBOSE){ cout<<method<<" X,Y: "<<TE<<endl; }
-	  compute_TE(TE, Y, X, lookBack, k, method,corDist,addNoise);
-	  if(VERBOSE){ cout<<method<<" Y,X: "<<TE<<endl; }
+	  //compute_TE(TE, Y, X, lookBack, k, method,corDist,addNoise);
+	  //if(VERBOSE){ cout<<method<<" Y,X: "<<TE<<endl; }
   }
   catch(invalid_argument& e)
   {
