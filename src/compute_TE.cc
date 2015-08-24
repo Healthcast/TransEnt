@@ -13,6 +13,12 @@
 #include <algorithm>
 #include <iterator>
 
+/* WARNING!!
+ * The algorithms used here assume nearest neighbors are determined using the max norm. We implement the 
+ * nearest neigbhor search using the ANN (Approximate Nearest Neighbor) library. ANN is set to use the 
+ * max norm by adjusting some variables in the library's header files. Keep this in mind if you choose 
+ * to extend this library.
+ */
 #include <ANN/ANN.h>	// ANN declarations
 
 #include <boost/tokenizer.hpp>							// for reading cvd
