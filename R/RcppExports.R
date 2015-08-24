@@ -5,7 +5,7 @@
 #'
 #' \code{ComputeTE} return estimation of transfer entropy between two random process given a method.
 #'
-#' A function to calculate Transfer entropy from a random process \code{Y} to 
+#' A function to calculate Transfer Entropy from a random process \code{Y} to 
 #' the random process \code{X} with specified \code{embedding} dimension and \code{k}'th neighbor for 
 #' k nearest neibor search used in the estimation given a \code{method} from provided methods in this package.
 #' TODO: fix details (talk about adding noise somewhere)
