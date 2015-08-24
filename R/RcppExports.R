@@ -33,10 +33,10 @@
 #'   Y[i+1] <- 0.5*Y[i] + rnorm(1)
 #'   X[i+1] <- 0.6*X[i] + 0.5*Y[i] + rnorm(1)
 #' }
-#' ## Compute the TE from X to Y (should be approximately zero),
-#' ## and from Y to X (should be approximately 0.35).
-#' ComputeTE(X,Y,3,1,"MI_diff")
-#' ComputeTE(Y,X,3,1,"MI_diff")
+#' ## Compute the TE from X to Y 
+#' ## and from Y to X
+#' ComputeTE(X,Y,3,1,"MI_diff")  ## should be zero
+#' ComputeTE(Y,X,3,1,"MI_diff")  ## should be ~0.35
 #' ComputeTE(X,Y,1,1,"Correlation")
 #' ComputeTE(Y,X,1,1,"Correlation")
 #' ComputeTE(X,Y,3,1,"Correlation",0.5)
