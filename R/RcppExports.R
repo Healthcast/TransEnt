@@ -27,9 +27,8 @@
 #' ## Intitialize two vectors of length 10001
 #' X <- rep(0,10000+1) 
 #' Y <- rep(0,10000+1)
-#' ## Create two linked random processes. Y depends only on previous
-#' ## values of Y, while X is determined in part by the previous
-#' ## value of Y
+#' ## Create two linked random processes. Y is independent of X,
+#' ## while X is determined in part by the previous values of Y.
 #' for(i in 1:10000){
 #'   Y[i+1] <- 0.5*Y[i] + rnorm(1)
 #'   X[i+1] <- 0.6*X[i] + 0.5*Y[i] + rnorm(1)
