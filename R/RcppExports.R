@@ -3,7 +3,7 @@
 
 #' Estimate Transfer Entropy.
 #'
-#' \code{ComputeTE} Estimate the Transfer Entropy (TE) from one random process to another. 
+#' \code{ComputeTE} Estimate the Transfer Entropy (TE) from one random process to a second process.
 #'
 #' A function to calculate Transfer Entropy from random process \code{Y} to random process \code{X}. The definition of TE assumes \code{X} is an Markov process. The  \code{embedding} dimension should be chosen to match the delay of the Markov process. The TE measures the additional amount of information \code{Y} contains about \code{X} over the information contained in the Markov embedding.
 #' Two \code{methods} for estimating TE are provided. The first is based on the mutual information distance \code{MI(X_i+1 | X^{(e) },Y_i) - MI(X_i+1 | X^{(e)} )}, where \code{e} is the embedding dimension. This approach follows directly from the definition of the TE. Mutual information is estimated using the \code{k}-nearest neighbor approach suggested by Krasvok.
@@ -35,8 +35,8 @@
 #' }
 #' ## Compute the TE from X to Y 
 #' ## and from Y to X
-#' ComputeTE(X,Y,3,1,"MI_diff")  ## should be zero
-#' ComputeTE(Y,X,3,1,"MI_diff")  ## should be ~0.35
+#' ComputeTE(X,Y,3,1,"MI_diff")  ## should be circa 0.15
+#' ComputeTE(Y,X,3,1,"MI_diff")  ## should be near zero
 #' ComputeTE(X,Y,1,1,"Correlation")
 #' ComputeTE(Y,X,1,1,"Correlation")
 #' ComputeTE(X,Y,3,1,"Correlation",0.5)
