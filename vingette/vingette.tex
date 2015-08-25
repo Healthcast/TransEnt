@@ -1,0 +1,17 @@
+\paragraph{transfer entropy}
+Our basic strategy is to make a pairwise comparision between all time series to determine which is predictive of the other. 
+Since effects may not be linear, correlation based measures such as Granger causality are not the most reliable. 
+Instead, we use the transfer entropy \cite{Schreiber2000}. 
+The transfer entropy extends the concept of mutual information to provide a direction-sensitive measure of information flow between two time series.
+Formally, the transfer entropy from time series Y to X is given by
+\begin{equation}
+T_{Y \rightarrow X} = \sum p(x_{n+1},x_n^{(k)},y_n^{(l)}) log 
+\frac{p(x_{n+1} \mid x_n^{(k)}, y_n^{(l)})}{p(x_{n+1} \mid x_n^{(k)})}
+\end{equation}
+where $x_{n+1}$ is the value of $X$ at time $n+1$, and $x_n^{(k)}$ ($y_n^{(l)}$) is the $k$ ($l$) lagged values of $X$ ($Y$) at time $n$.
+
+
+Estimates of transfer entropy are based on a nearest-neighbor based approach \cite{Kraskov2004}. While the mathematical justification for this approach is based on combinatorical arguments, in practice the nearest neighbor approach closely resembles a kernel-density estimate with adaptive kernel size.
+The authors of \cite{Kraskov2004} claim that the method performs well even on data with only 40 samples. 
+A different group has found that kernel density estimates of transfer entropy detect coupling strength at lower signal to noise levels than other methods when applied to small samples with outliers \cite{Lee2012}.
+
