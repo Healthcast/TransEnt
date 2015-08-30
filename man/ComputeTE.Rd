@@ -7,18 +7,19 @@
 \alias{transferentropy}
 \title{Estimate Transfer Entropy.}
 \usage{
-ComputeTE(X, Y, embedding, k, method = "MI_diff", epsDist = -1)
+ComputeTE(X, Y, embedding, k, method = "MI_diff", epsDist = -1,
+  safetyCheck = FALSE)
 }
 \arguments{
 \item{X}{Numeric vector, Transfer Entropy is calculated to random process X}
 
 \item{Y}{Numeric vector, Transfer Entropy is calculated from random process Y}
 
-\item{embedding}{Numeric, The embedding dimension. It should be positive}
+\item{embedding}{Numeric, The embedding dimension. Must be positive integer}
 
-\item{k}{Numeric, The k'th neighbor. It should be positive}
+\item{k}{Numeric, The k'th neighbor. Must be positive integer. Kraskov suggests a value in (1,3).}
 
-\item{method}{String, The method to be used to estimate TE from ("MI_dif","Direct","Correlation")}
+\item{method}{String, The method to be used to estimate TE from ("MI_dif","Correlation")}
 
 \item{epsDistace}{Numeric, The distance used for measuring TE in Correlation method, by default it is the average distance calculated in XKY}
 }
@@ -26,26 +27,33 @@ ComputeTE(X, Y, embedding, k, method = "MI_diff", epsDist = -1)
 Numeric, The estimated transfer entropy
 }
 \description{
-\code{ComputeTE} return estimation of transfer entropy between two random process given a method.
+\code{ComputeTE} Estimate the Transfer Entropy (TE) from one random process to a second process.
 }
 \details{
-A function to calculate Transfer entropy from a random process \code{Y} to
-the random process \code{X} with specified \code{embedding} dimension and \code{k}'th neighbor for
-k nearest neibor search used in the estimation given a \code{method} from provided methods in this package.
-TODO: fix details (talk about adding noise somewhere)
+A function to calculate Transfer Entropy from random process \code{Y} to random process \code{X}. The definition of TE assumes \code{X} is an Markov process. The  \code{embedding} dimension should be chosen to match the delay of the Markov process. The TE measures the additional amount of information \code{Y} contains about \code{X} over the information contained in the Markov embedding.
+Two \code{methods} for estimating TE are provided. The first is based on the mutual information distance \code{MI(X_i+1 | X^{(e) },Y_i) - MI(X_i+1 | X^{(e)} )}, where \code{e} is the embedding dimension. This approach follows directly from the definition of the TE. Mutual information is estimated using the \code{k}-nearest neighbor approach suggested by Krasvok.
+The second method is based on the generalized correlation sum.
+
+Things can go wrong in several ways. First, the random processes must meet the assumption of the TE. That is, \code{X} must represent some form of Markov process whose probability distribution may also be influenced by \code{Y}. A more subtle error can occur when multiple points in \code{X^(k)} (or some of its subspaces) have identical coordinates. This can lead to several points which have identical distance to a query point, which violates the assumptions of the Kraskov estimator, causing it to throw an error. The solution in this case is to add some small noise to the measurements \code{X} prior to computing TE.
 }
 \examples{
+## Intitialize two vectors of length 10001
 X <- rep(0,10000+1)
 Y <- rep(0,10000+1)
+## Create two linked random processes. Y is independent of X,
+## while X is determined in part by the previous values of Y.
 for(i in 1:10000){
   Y[i+1] <- 0.5*Y[i] + rnorm(1)
   X[i+1] <- 0.6*X[i] + 0.5*Y[i] + rnorm(1)
 }
-ComputeTE(X,Y,3,1,"MI_diff")
-ComputeTE(Y,X,3,1,"MI_diff")
+## Compute the TE from X to Y
+## and from Y to X
+ComputeTE(X,Y,3,1,"MI_diff")  ## should be circa 0.15
+ComputeTE(Y,X,3,1,"MI_diff")  ## should be near zero
 ComputeTE(X,Y,1,1,"Correlation")
 ComputeTE(Y,X,1,1,"Correlation")
-ComputeTE(X,Y,3,1,"Correlation",0.5)
+ComputeTE(X,Y,3,1,"Correlation",0.4)
+ComputeTE(Y,X,3,1,"Correlation",0.4)
 }
 \seealso{
 TODO arbitrary

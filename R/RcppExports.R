@@ -39,10 +39,10 @@
 #' ComputeTE(Y,X,3,1,"MI_diff")  ## should be near zero
 #' ComputeTE(X,Y,1,1,"Correlation")
 #' ComputeTE(Y,X,1,1,"Correlation")
-#' ComputeTE(X,Y,3,1,"Correlation",0.5)
-#' 
+#' ComputeTE(X,Y,3,1,"Correlation",0.4)
+#' ComputeTE(Y,X,3,1,"Correlation",0.4)
 
-ComputeTE <- function(X, Y, embedding, k, method="MI_diff", epsDist=-1) {
+ComputeTE <- function(X, Y, embedding, k, method="MI_diff", epsDist=-1, safetyCheck=FALSE) {
   methods = c("correlation","mi_diff")
   method = charmatch(tolower(method),methods)
   if (is.na(method) )
@@ -59,7 +59,7 @@ ComputeTE <- function(X, Y, embedding, k, method="MI_diff", epsDist=-1) {
   if( length(X) != length(Y))
     stop("X and Y should have the same length")
   
-  .Call('Rcpp_ComputeTE', X, Y, embedding, k, methods[method], epsDist, PACKAGE = 'ComputeTE')
+  .Call('Rcpp_ComputeTE', X, Y, embedding, k, methods[method], epsDist, safetyCheck, PACKAGE = 'ComputeTE')
 }
 
 

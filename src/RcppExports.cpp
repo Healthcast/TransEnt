@@ -8,9 +8,9 @@
 using namespace Rcpp;
 
 int compute_TE(double& TE, std::vector<double>&X, std::vector<double>&Y,
-		       int embedding,int k, std::string method, double epsDistance=-1, bool addNoise = false);
+		       int embedding,int k, std::string method, double epsDistance=-1, bool safetyChk = false ,bool addNoise = false);
 
-RcppExport SEXP Rcpp_ComputeTE(SEXP Rx, SEXP Ry, SEXP Re, SEXP Rk, SEXP Rm, SEXP RepsDist)
+RcppExport SEXP Rcpp_ComputeTE(SEXP Rx, SEXP Ry, SEXP Re, SEXP Rk, SEXP Rm, SEXP RepsDist, SEXP RsafetyCheck)
 {
 	List ret;
 	double TE;
@@ -22,8 +22,9 @@ RcppExport SEXP Rcpp_ComputeTE(SEXP Rx, SEXP Ry, SEXP Re, SEXP Rk, SEXP Rm, SEXP
 	int embedding = as<int>(Re);
 	int k = as<int>(Rk);
 	double epsDist = as<double>(RepsDist);
+	bool safetyCheck = as<bool> (RsafetyCheck);
 	try{
-		Rcpp::wrap(compute_TE(TE,X,Y,embedding,k,method,epsDist,false));
+		Rcpp::wrap(compute_TE(TE,X,Y,embedding,k,method,epsDist,safetyCheck,false));
 	}
 	catch(std::invalid_argument& e)
 	{

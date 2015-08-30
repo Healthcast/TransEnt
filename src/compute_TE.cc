@@ -14,9 +14,9 @@
 #include <iterator>
 
 /* WARNING!!
- * The algorithms used here assume nearest neighbors are determined using the max norm. We implement the 
- * nearest neigbhor search using the ANN (Approximate Nearest Neighbor) library. ANN is set to use the 
- * max norm by adjusting some variables in the library's header files. Keep this in mind if you choose 
+ * The algorithms used here assume nearest neighbors are determined using the max norm. We implement the
+ * nearest neigbhor search using the ANN (Approximate Nearest Neighbor) library. ANN is set to use the
+ * max norm by adjusting some variables in the library's header files. Keep this in mind if you choose
  * to extend this library.
  */
 #include <ANN/ANN.h>	// ANN declarations
@@ -39,14 +39,56 @@ const size_t ERROR_UNHANDLED_EXCEPTION = 2;
 
 FILE *pFilexky, *pFilex, *pFileky, *pFilexk, *pFilek;
 
-//TODO:
-int safetyCheck()
+int safetyCheck(const vector<double>&X,const vector<double>&Y,int embedding,
+	       ANNpointArray &xkyPts,ANNpointArray &kyPts,
+	       ANNpointArray &xkPts,ANNpointArray &kPts,
+		   int nPts)
 {
-	return 0;
+	for(int i=0;i<nPts;i++)
+	{
+		ANNpoint tmpPxky = xkyPts[i];
+		ANNpoint tmpPky  = kyPts[i];
+		ANNpoint tmpPxk  = xkPts[i];
+		ANNpoint tmpPk   = kPts[i];
+		for(int j=i+1;j<nPts;j++)
+		{
+			if(tmpPxky == xkyPts[j])
+			{
+				cout<<"Points with same coordinates in the XKY tree (add noise).";
+				return -1;
+			}
+			if(tmpPky == kyPts[j])
+			{
+				cout<<"Points with same coordinates in the KY tree (add noise).";
+				return -1;
+			}
+			if(tmpPxk == xkPts[j])
+			{
+				cout<<"Points with same coordinates in the XK tree (add noise).";
+				return -1;
+			}
+			if(tmpPk == kPts[j])
+			{
+				cout<<"Points with same coordinates in the K tree (add noise).";
+				return -1;
+			}
+		}
+
+	}
+	for(int i=embedding;i<X.size();i++){
+		for(int j=i+1;j<X.size();j++){
+			if(X[i]==X[j])
+			{
+				cout<<"Points with same coordinates in the X tree (add noise).";
+				return -1;
+			}
+		}
+	}
+	return 1;
 }
 
 // make spaces xky, ky, xk, k
-int MakeSpaces(const vector<double>&X,const vector<double>&Y,int embedding,
+int MakeSpaces(const vector<double>&X,const vector<double>&Y,int embedding,bool safetyChk,
 	       ANNpointArray &xkyPts,ANNpointArray &kyPts,
 	       ANNpointArray &xkPts,ANNpointArray &kPts,
 	       ANNkd_tree* &xkykdTree,ANNkd_tree* &kykdTree,
@@ -94,7 +136,8 @@ int MakeSpaces(const vector<double>&X,const vector<double>&Y,int embedding,
     if(DEBUG)	fprintf(pFileky,"\n");
     if(DEBUG)	fprintf(pFilek,"\n");
   }
-  cout<<"npts: "<<nPts<<endl;
+  if(safetyChk)
+	  safetyCheck(X,Y,embedding,xkyPts,kyPts,xkPts,kPts,nPts);
   xkykdTree = new ANNkd_tree(xkyPts, nPts, dimxky);
   for(int i=0;i<nPts;i++)
   {
@@ -290,22 +333,42 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
       tmpdist=abs(xkPts[i][j] - xkPts[idx][j]);
       if(tmpdist>kdist){ kdist=tmpdist; }
     }
-    if(kydist==0){
-      cout<<"ky crashing at "<<i<<", "<<idx<<"\n\t"<<endl;
-      for(int j=1;j<dimxky;j++){ cout<<xkyPts[i][j]<<"\t"; }
-      cout<<"\n\t"<<endl;
-      for(int j=1;j<dimxky;j++){ cout<<xkyPts[idx][j]<<"\t"; }
-      cout<<"\n\t"<<endl;
-      //TODO handle exit
-    }
-    if(kdist==0){
-      cout<<"k crashing at "<<i<<", "<<idx<<"\n\t"<<endl;
-      for(int j=1;j<dimxk;j++){ cout<<xkPts[i][j]<<"\t"; }
-      cout<<"\n\t"<<endl;
-      for(int j=1;j<dimxk;j++){ cout<<xkPts[idx][j]<<"\t"; }
-      cout<<"\n\t"<<endl;
-      //TODO handle exit
-    }
+    if(xdistXKY==0){
+	  cout<<"x (XKY) crashing at "<<i<<", "<<idx<<"\n\t"<<endl;
+	  for(int j=0;j<dimxky;j++){ cout<<xkyPts[i][j]<<"\t"; }
+	  cout<<"\n\t"<<endl;
+	  for(int j=0;j<dimxky;j++){ cout<<xkyPts[idx][j]<<"\t"; }
+	  cout<<"\n\t"<<endl;
+	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
+	  return -1;
+	}
+	if(xdistXK==0){
+	  cout<<"x (XK) crashing at "<<i<<", "<<idx<<"\n\t"<<endl;
+	  for(int j=0;j<dimxk;j++){ cout<<xkPts[i][j]<<"\t"; }
+	  cout<<"\n\t"<<endl;
+	  for(int j=0;j<dimxk;j++){ cout<<xkPts[idx][j]<<"\t"; }
+	  cout<<"\n\t"<<endl;
+	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
+	  return -1;
+	}
+	if(kydist==0){
+	  cout<<"ky crashing at "<<i<<", "<<idx<<"\n\t"<<endl;
+	  for(int j=0;j<dimxky;j++){ cout<<xkyPts[i][j]<<"\t"; }
+	  cout<<"\n\t"<<endl;
+	  for(int j=0;j<dimxky;j++){ cout<<xkyPts[idx][j]<<"\t"; }
+	  cout<<"\n\t"<<endl;
+	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
+	  return -1;
+	}
+	if(kdist==0){
+	  cout<<"k crashing at "<<i<<", "<<idx<<"\n\t"<<endl;
+	  for(int j=0;j<dimxk;j++){ cout<<xkPts[i][j]<<"\t"; }
+	  cout<<"\n\t"<<endl;
+	  for(int j=0;j<dimxk;j++){ cout<<xkPts[idx][j]<<"\t"; }
+	  cout<<"\n\t"<<endl;
+	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
+	  return -1;
+	}
     // Count the number of points in X subspace within these distances
     // since this is a 1-d space, ASSUMING faster by a loop than by
     // kd-tree lookups
@@ -475,7 +538,7 @@ void addNoiseData(vector<double>&X,vector<double>&Y)
  * @param[in]   addNoise If the data does not contain noise originally this should set to true
  * @return		SUCCESS/ERORR code
  */
-int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, int k, string method, double epsDistance=-1, bool addNoise = false){
+int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, int k, string method, double epsDistance=-1, bool safetyChk=false, bool addNoise = false){
   if(DEBUG)	cout<<epsDistance<<endl;
   if( method != "MI_diff" 	&& method != "mi_diff" &&
 /*    method != "Direct"  	&& method != "direct"  */
@@ -501,7 +564,7 @@ int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, in
       dimk   =  embedding,
       nPts;								//number of points
   // making all spaces (xky, ky, xk, k) and kdtrees
-  nPts = MakeSpaces(X,Y,embedding,xkyPts,kyPts,xkPts,kPts,xkykdTree,kykdTree,xkkdTree,kkdTree);
+  nPts = MakeSpaces(X,Y,embedding,safetyChk,xkyPts,kyPts,xkPts,kPts,xkykdTree,kykdTree,xkkdTree,kkdTree);
   // choosing the method for calculating TE
   if(method == "mi_diff" || method == "MI_diff")
   {
