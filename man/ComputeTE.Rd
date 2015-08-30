@@ -7,7 +7,7 @@
 \alias{transferentropy}
 \title{Estimate Transfer Entropy.}
 \usage{
-ComputeTE(X, Y, embedding, k, method = "MI_diff", epsDist = -1,
+ComputeTE(X, Y, embedding, k, method = "MI_diff", epsDistace = -1,
   safetyCheck = FALSE)
 }
 \arguments{
@@ -21,9 +21,9 @@ ComputeTE(X, Y, embedding, k, method = "MI_diff", epsDist = -1,
 
 \item{method}{String, The method to be used to estimate TE from ("MI_dif","Correlation")}
 
-\item{safetyCheck}{Logical, For computing TE using "mi_diff" method the data need to be noisy otherwise a crach might happen. This parameter can check if there are any idetical points in the spaces made for this use.}
-
 \item{epsDistace}{Numeric, The distance used for measuring TE in Correlation method, by default it is the average distance calculated in XKY}
+
+\item{safetyCheck}{Logical, For computing TE using "mi_diff" method the data need to be noisy otherwise a crach might happen. This parameter can check if there are any idetical points in the spaces made for this use.}
 }
 \value{
 Numeric, The estimated transfer entropy
