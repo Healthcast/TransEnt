@@ -17,6 +17,7 @@
 #' @param k Numeric, The k'th neighbor. Must be positive integer. Kraskov suggests a value in (1,3).
 #' @param method String, The method to be used to estimate TE from ("MI_dif","Correlation")
 #' @param epsDistace Numeric, The distance used for measuring TE in Correlation method, by default it is the average distance calculated in XKY
+#' @param safetyCheck Logical, For computing TE using "mi_diff" method the data need to be noisy otherwise a crach might happen. This parameter can check if there are any idetical points in the spaces made for this use.
 #' @return Numeric, The estimated transfer entropy
 #' 
 #' @family TODO arbitrary

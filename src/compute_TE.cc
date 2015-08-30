@@ -534,8 +534,9 @@ void addNoiseData(vector<double>&X,vector<double>&Y)
  * @param[in]   embedding The embedding dimension
  * @param[in]   k The k'th neighbor
  * @param[in]   method The method to be used to estimate TE
- * @param[in]   epsDistace Distance used for measuring TE in Correlation method, by default it is the average distance calculated in XKY  TODO: check this one (change also in R and other function)
+ * @param[in]   epsDistace Distance used for measuring TE in Correlation method, by default it is the average distance calculated in XKY
  * @param[in]   addNoise If the data does not contain noise originally this should set to true
+ * @param[in]   safetyCheck For computing TE using "mi_diff" method the data need to be noisy otherwise a crach might happen. This parameter can check if there are any idetical points in the spaces made for this use.
  * @return		SUCCESS/ERORR code
  */
 int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, int k, string method, double epsDistance=-1, bool safetyChk=false, bool addNoise = false){
