@@ -1,10 +1,10 @@
-Package: ComputeTE
+Package: TransferEntropy
 Type: Package
 Title: The transfer entropy Package
 Version: 1.0
 Date: TODO
-Author: Ghazaleh Haratinezhad Torbati and Glenn Lawyer
-Maintainer: Your Name <your@email.com>
+Author: Ghazaleh Haratinezhad Torbati, Glenn Lawyer
+Maintainer: Ghazaleh Haratinezhad Torbati <ghazale.hnt@gmail.com>, Glenn Lawyer <lawyer@mpi-inf.mpg.de>
 Description: TODO
 License: GPL (>= 2)
 Imports: Rcpp (>= 0.11.6)

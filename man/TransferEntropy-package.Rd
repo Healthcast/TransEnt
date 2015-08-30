@@ -1,24 +1,23 @@
-\name{ComputeTE-package}
-\alias{ComputeTE-package}
-\alias{ComputeTE}
+\name{TransferEntropy-package}
+\alias{TransferEntropy-package}
 \docType{package}
 \title{
-\packageTitle{ComputeTE}
+\packageTitle{TransferEntropy}
 }
 \description{
-\packageDescription{ComputeTE}
+\packageDescription{TransferEntropy}
 }
 \details{
 
 The DESCRIPTION file:
-\packageDESCRIPTION{ComputeTE}
-\packageIndices{ComputeTE}
+\packageDESCRIPTION{TransferEntropy}
+\packageIndices{TransferEntropy}
 ~~ An overview of how to use the package, including the most important functions ~~
 }
 \author{
-\packageAuthor{ComputeTE}
+\packageAuthor{TransferEntropy}
 
-Maintainer: \packageMaintainer{ComputeTE}
+Maintainer: \packageMaintainer{TransferEntropy}
 }
 \references{
 ~~ Literature or other references for background information ~~

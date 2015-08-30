@@ -60,7 +60,7 @@ ComputeTE <- function(X, Y, embedding, k, method="MI_diff", epsDistace=-1, safet
   if( length(X) != length(Y))
     stop("X and Y should have the same length")
   
-  .Call('Rcpp_ComputeTE', X, Y, embedding, k, methods[method], epsDistace, safetyCheck, PACKAGE = 'ComputeTE')
+  .Call('Rcpp_ComputeTE', X, Y, embedding, k, methods[method], epsDistace, safetyCheck, PACKAGE = 'TransferEntropy')
 }
 
 
