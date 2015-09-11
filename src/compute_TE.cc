@@ -514,13 +514,6 @@ int foo=0;
   double TE = TE = Total/nPts;
   return TE;
 }
-//TODO: something is going wrong?
-void addNoiseData(vector<double>&X,vector<double>&Y)
-{
-	std::srand (std::time(NULL));
-	for(int i=0;i<X.size();i++)	X[i]+= ((std::rand()%999 + 1)/ 10000000000.0);
-	for(int i=0;i<Y.size();i++)	Y[i]+= ((std::rand()%999 + 1)/ 10000000000.0);
-}
 
 /**
  * @brief 		Compute estimation of Transfer Entropy between two random process
@@ -535,11 +528,10 @@ void addNoiseData(vector<double>&X,vector<double>&Y)
  * @param[in]   k The k'th neighbor
  * @param[in]   method The method to be used to estimate TE
  * @param[in]   epsDistace Distance used for measuring TE in Correlation method, by default it is the average distance calculated in XKY
- * @param[in]   addNoise If the data does not contain noise originally this should set to true
  * @param[in]   safetyCheck For computing TE using "mi_diff" method the data need to be noisy otherwise a crach might happen. This parameter can check if there are any idetical points in the spaces made for this use.
  * @return		SUCCESS/ERORR code
  */
-int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, int k, string method, double epsDistance=-1, bool safetyChk=false, bool addNoise = false){
+int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, int k, string method, double epsDistance=-1, bool safetyChk=false){
   if(DEBUG)	cout<<epsDistance<<endl;
   if( method != "MI_diff" 	&& method != "mi_diff" &&
 /*    method != "Direct"  	&& method != "direct"  */
@@ -548,8 +540,6 @@ int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, in
 	  throw invalid_argument("Method not specified correctly. Please choose one of the following. (\"MI_diff\", \"Correlation\")");
 	  return -1;//error
 	}
-  if(addNoise)
-	  addNoiseData(X,Y);
 
   ANNpointArray		xkyPts;				// data points
   ANNpointArray		kyPts;				// data points
@@ -622,7 +612,6 @@ int main(int argc, char** argv)
 {
   bool VERBOSE= 0;
   int lookBack = 3;
-  bool addNoise = 0;
   int k = 1;
   string data("test4_1K.csv");
   string method("MI_diff");
@@ -638,8 +627,7 @@ int main(int argc, char** argv)
 		("kthNeighbor,k", po::value<int>(&k)                 ,      "K'th neighbor")
 	    ("input,i",       po::value<string>(&data)->required(),     "Data input file")
 		("method,m",      po::value<string>(&method),               "Method for calculating TE (\"MI_diff\", \"Correlation\")")
-		("correlationDistance,d",      po::value<double>(&corDist), "Distance for calculation TE with Correlation method")
-		("addNoise,n",    											"add noise to the data");
+		("correlationDistance,d",      po::value<double>(&corDist), "Distance for calculation TE with Correlation method");
 	po::variables_map vm;
 	try
 	{
@@ -652,10 +640,6 @@ int main(int argc, char** argv)
 	  if ( vm.count("verbose")  )
 	  {
 		VERBOSE = 1;
-	  }
-	  if( vm.count("addNoise") )
-	  {
-		  addNoise=true;
 	  }
 	  po::notify(vm);
 	}
@@ -698,9 +682,9 @@ int main(int argc, char** argv)
 	  vector<double>X;
 	  vector<double>Y;
 	  makeXY(data,X,Y);
-	  compute_TE(TE, X, Y, lookBack, k, method,corDist,addNoise);
+	  compute_TE(TE, X, Y, lookBack, k, method,corDist);
 	  if(VERBOSE){ cout<<method<<" X,Y: "<<TE<<endl; }
-	  //compute_TE(TE, Y, X, lookBack, k, method,corDist,addNoise);
+	  //compute_TE(TE, Y, X, lookBack, k, method,corDist);
 	  //if(VERBOSE){ cout<<method<<" Y,X: "<<TE<<endl; }
   }
   catch(invalid_argument& e)

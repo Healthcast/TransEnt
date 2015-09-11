@@ -9,7 +9,7 @@ Description: TODO
 License: GPL (>= 2)
 Imports: Rcpp (>= 0.11.6)
 LinkingTo: Rcpp
-URL: TODO
+URL: https://github.com/Healthcast/TransEnt
 NeedsCompilation: yes?
 Repository: TODO
 Date/Publication: TODO

@@ -6,11 +6,16 @@
 }
 \description{
 \packageDescription{TransferEntropy}
+cats are abetterthan dogs
 }
 \details{
 
 The DESCRIPTION file:
 \packageDESCRIPTION{TransferEntropy}
+I like dogs and cats adnd things
+
+lots of text
+\emph{some of it italic}
 \packageIndices{TransferEntropy}
 ~~ An overview of how to use the package, including the most important functions ~~
 }
