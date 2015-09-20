@@ -54,22 +54,22 @@ int safetyCheck(const vector<double>&X,const vector<double>&Y,int embedding,
 		{
 			if(tmpPxky == xkyPts[j])
 			{
-				cout<<"Points with same coordinates in the XKY tree (add noise).";
+				throw invalid_argument("Points with same coordinates in the XKY tree (add noise).");
 				return -1;
 			}
 			if(tmpPky == kyPts[j])
 			{
-				cout<<"Points with same coordinates in the KY tree (add noise).";
+				throw invalid_argument("Points with same coordinates in the KY tree (add noise).");
 				return -1;
 			}
 			if(tmpPxk == xkPts[j])
 			{
-				cout<<"Points with same coordinates in the XK tree (add noise).";
+				throw invalid_argument("Points with same coordinates in the XK tree (add noise).");
 				return -1;
 			}
 			if(tmpPk == kPts[j])
 			{
-				cout<<"Points with same coordinates in the K tree (add noise).";
+				throw invalid_argument("Points with same coordinates in the K tree (add noise).");
 				return -1;
 			}
 		}
@@ -79,7 +79,7 @@ int safetyCheck(const vector<double>&X,const vector<double>&Y,int embedding,
 		for(int j=i+1;j<X.size();j++){
 			if(X[i]==X[j])
 			{
-				cout<<"Points with same coordinates in the X tree (add noise).";
+				throw invalid_argument("Points with same coordinates in the X tree (add noise).");
 				return -1;
 			}
 		}
@@ -211,7 +211,7 @@ int countByDistanceView(ANNkd_tree* kdTree, ANNpoint Pt, double Distance)
                 NULL,
                 NULL,
                 0);
-  if(DEBUG)	cout<<"dist: "<<Distance<<" cnt: "<<cnt<<endl;
+  if(DEBUG)	printf("dist: %f cnt: %d\n",Distance,cnt);
   ANNidxArray    nnIdx = new ANNidx[cnt];    // allocate near neigh indices
   ANNdistArray    dists = new ANNdist[cnt];    // allocate near neighbor dists
   cnt= kdTree->annkFRSearch(Pt,
@@ -222,9 +222,9 @@ int countByDistanceView(ANNkd_tree* kdTree, ANNpoint Pt, double Distance)
                 0);
   if(DEBUG)
   for(int i=0;i<cnt;i++){
-	  cout<<i<<" of " << cnt<<": "<<abs(dists[i]-Distance)<<" dist "<<dists[i]<<" pindx "<<nnIdx[i]<<endl;
+	  printf("%d of %d: %f dist %f pindx %d\n",i,cnt,abs(dists[i]-Distance),dists[i],nnIdx[i]);
   }
-  if(DEBUG)	cout<<"---------"<<endl;
+  if(DEBUG)	printf("-----------\n");
 
   return cnt;
 }
@@ -240,10 +240,10 @@ int countByDistance(ANNkd_tree* kdTree, ANNpoint Pt, double Distance)
 								0);					// error bound
 
   if(DEBUG){
-	  cout<<"cnt "<<cnt<<endl;
+	  printf("cnt %d\n",cnt);
 	  int fooCnt = countByDistanceView(kdTree, Pt, Distance);
 	  if(cnt != fooCnt)
-		  cout<<"cnt not match\n";
+		  printf("cnt not match\n");
   }
 
   return cnt;
@@ -334,38 +334,38 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
       if(tmpdist>kdist){ kdist=tmpdist; }
     }
     if(xdistXKY==0){
-	  cout<<"x (XKY) crashing at "<<i<<", "<<idx<<"\n\t"<<endl;
-	  for(int j=0;j<dimxky;j++){ cout<<xkyPts[i][j]<<"\t"; }
-	  cout<<"\n\t"<<endl;
-	  for(int j=0;j<dimxky;j++){ cout<<xkyPts[idx][j]<<"\t"; }
-	  cout<<"\n\t"<<endl;
+	  printf("x (XKY) crashing at %d, %d \n\t\n",i,idx);
+	  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[i][j]); }
+	  printf("\n\t\n");
+	  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[idx][j]); }
+	  printf("\n\t\n");
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
 	if(xdistXK==0){
-	  cout<<"x (XK) crashing at "<<i<<", "<<idx<<"\n\t"<<endl;
-	  for(int j=0;j<dimxk;j++){ cout<<xkPts[i][j]<<"\t"; }
-	  cout<<"\n\t"<<endl;
-	  for(int j=0;j<dimxk;j++){ cout<<xkPts[idx][j]<<"\t"; }
-	  cout<<"\n\t"<<endl;
+	  printf("x (XK) crashing at %d, %d \n\t\n",i,idx);
+	  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[i][j]); }
+	  printf("\n\t\n");
+	  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[idx][j]); }
+	  printf("\n\t\n");
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
 	if(kydist==0){
-	  cout<<"ky crashing at "<<i<<", "<<idx<<"\n\t"<<endl;
-	  for(int j=0;j<dimxky;j++){ cout<<xkyPts[i][j]<<"\t"; }
-	  cout<<"\n\t"<<endl;
-	  for(int j=0;j<dimxky;j++){ cout<<xkyPts[idx][j]<<"\t"; }
-	  cout<<"\n\t"<<endl;
+	  printf("ky crashing at %d, %d \n\t\n",i,idx);
+	  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[i][j]); }
+	  printf("\n\t\n");
+	  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[idx][j]); }
+	  printf("\n\t\n");
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
 	if(kdist==0){
-	  cout<<"k crashing at "<<i<<", "<<idx<<"\n\t"<<endl;
-	  for(int j=0;j<dimxk;j++){ cout<<xkPts[i][j]<<"\t"; }
-	  cout<<"\n\t"<<endl;
-	  for(int j=0;j<dimxk;j++){ cout<<xkPts[idx][j]<<"\t"; }
-	  cout<<"\n\t"<<endl;
+	  printf("k crashing at %d, %d \n\t\n",i,idx);
+	  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[i][j]); }
+	  printf("\n\t\n");
+	  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[idx][j]); }
+	  printf("\n\t\n");
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
@@ -391,10 +391,9 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
     cntK += digamma(fooCnt);
     //avD2 += fooCnt; // DEBUG
     // if(i>2) break; // DEBUG
-    if(DEBUG) cout<<"npts "<<i<<endl;
+    if(DEBUG) printf("npts %d\n",i);
   }
-  if(DEBUG) cout<<"av dist: "<<avDist/nPts<<endl;
-  //cout<<"av dist: "<<avDist/nPts<<"\t"<<avD2/nPts<<"\t ratio: "<<avDist/avD2<<endl; //DEBUG
+  if(DEBUG) printf("av dist: %f\n",avDist/nPts);
   // The transfer entropy is the difference of the two mutual informations
   // If we define  digK = digamma(k),  digN = digamma(nPts); then the
   // Kraskov (2004) estimator for MI gives
@@ -481,7 +480,7 @@ double TE_generalize_correlation_sum(int nPts, int k, int embedding,
 									 ANNpointArray		&kPts,
 									 double eDistance)
 {
-  if(DEBUG) cout<<"dist: "<<eDistance<<endl;
+  if(DEBUG) printf("dist: %f\n",eDistance);
   int dimxky =  embedding+2,											// dimensions of different spaces
    	  dimky  =  embedding+1,
 	  dimxk  =  embedding+1,
@@ -491,7 +490,7 @@ double TE_generalize_correlation_sum(int nPts, int k, int embedding,
 		  Total=0;														// for summing up log of cnts
 int foo=0;
   for(int i=0;i<nPts;i++){
-	if(DEBUG)	cout<<"dist "<<eDistance<<endl;
+	if(DEBUG)	printf("dist %f\n",eDistance);
 	cntXKY = countByDistance(xkykdTree, xkyPts[i], eDistance);// counts of points in XKY space within eDistance from point i
 	cntKY  = countByDistance( kykdTree,  kyPts[i], eDistance);// counts of points in KY space within eDistance from point i
 	cntXK  = countByDistance( xkkdTree,  xkPts[i], eDistance);// counts of points in XK space within eDistance from point i
@@ -500,16 +499,16 @@ int foo=0;
 	// if cntXKY is zero, counts in other cnts have to be zero as well
 	if(cntXKY != 0)														// error checking
 	{
-	  if(cntKY == 0)	cout<<"cntKY is Zero!!!\n";
-	  if(cntXK == 0)	cout<<"cntXK is Zero!!!\n";
-	  if(cntK == 0)	cout<<"cntK is Zero!!!\n";
+	  if(cntKY == 0)	printf("cntKY is Zero!!!\n");
+	  if(cntXK == 0)	printf("cntXK is Zero!!!\n");
+	  if(cntK == 0)		printf("cntK is Zero!!!\n");
 	}
 	// if cntXKY is zero the log(0) is undefined so do not add anything
 	if(cntXKY != 0)
 	  Total+= log2((cntXKY*cntK)/(cntXK*cntKY));
 	if(cntXKY==0) foo++;
   }
-  if(DEBUG) cout<<foo <<" zeros"<<endl;
+  if(DEBUG) printf("%d zeros\n",foo);
   // calculating TE:
   double TE = TE = Total/nPts;
   return TE;
@@ -532,7 +531,7 @@ int foo=0;
  * @return		SUCCESS/ERORR code
  */
 int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, int k, string method, double epsDistance=-1, bool safetyChk=false){
-  if(DEBUG)	cout<<epsDistance<<endl;
+  if(DEBUG)	printf("%f\n",epsDistance);
   if( method != "MI_diff" 	&& method != "mi_diff" &&
 /*    method != "Direct"  	&& method != "direct"  */
       method != "Correlation" 	&& method != "correlation")
@@ -569,7 +568,7 @@ int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, in
   {
 	if (epsDistance == -1)
 		epsDistance = compute_avg_distance_MI_diff(nPts, k, xkykdTree, xkyPts);
-	if(DEBUG) cout<<"avg distance: "<<epsDistance<<endl;
+	if(DEBUG) printf("avg distance: %f\n",epsDistance);
     TE =    TE_generalize_correlation_sum(nPts, k, embedding, xkykdTree, kykdTree, xkkdTree, kkdTree,    xkyPts, kyPts, xkPts, kPts, epsDistance);
   }
 
@@ -607,7 +606,7 @@ void makeXY(string data,vector<double>&X,vector<double>&Y)
 	return;
 }
 
-
+/*
 int main(int argc, char** argv)
 {
   bool VERBOSE= 0;
@@ -661,23 +660,23 @@ int main(int argc, char** argv)
   double TE;
 
 // making the result for 11 different coefficients
-/*
-  FILE *foo;
-  foo = fopen(plotfile.c_str(),"w");
-  fprintf(foo,"c,te\n");
-  if (method == "Correlation")
-  {
-	  string files[11] = {"test0-01.csv", "test0-1.csv", "test0-2.csv", "test0-3.csv", "test0-4.csv", "test0-5.csv",
-					      "test0-6.csv" , "test0-7.csv", "test0-8.csv", "test0-9.csv", "test1-0.csv"};
-	  for(int i=0;i<11;i++)
-	  {
-		  vector<double>X;
-		  vector<double>Y;
-		  makeXY("Data/"+files[i],X,Y);
-		  compute_TE(TE, X, Y, lookBack, k, "Correlation",plotfile,exp(-1));
-		  fprintf(foo,"%s,%f\n",files[i].c_str(),TE);
-	  }
-  } //*/
+//  FILE *foo;
+//  foo = fopen(plotfile.c_str(),"w");
+//  fprintf(foo,"c,te\n");
+//  if (method == "Correlation")
+//  {
+//	  string files[11] = {"test0-01.csv", "test0-1.csv", "test0-2.csv", "test0-3.csv", "test0-4.csv", "test0-5.csv",
+//					      "test0-6.csv" , "test0-7.csv", "test0-8.csv", "test0-9.csv", "test1-0.csv"};
+//	  for(int i=0;i<11;i++)
+//	  {
+//		  vector<double>X;
+//		  vector<double>Y;
+//		  makeXY("Data/"+files[i],X,Y);
+//		  compute_TE(TE, X, Y, lookBack, k, "Correlation",plotfile,exp(-1));
+//		  fprintf(foo,"%s,%f\n",files[i].c_str(),TE);
+//	  }
+//  }
+
   try{
 	  vector<double>X;
 	  vector<double>Y;
@@ -692,18 +691,19 @@ int main(int argc, char** argv)
 	  cerr << e.what() << endl;
 	  return -1;
   }
- /* compute_TE(TE, X, Y, lookBack, "Correlation",0.55);
-  if(VERBOSE){ cout<<"Correlation X,Y: "<<TE<<endl; }
-  compute_TE(TE, X, Y, lookBack, "Correlation",0.65);
-  if(VERBOSE){ cout<<"Correlation X,Y: "<<TE<<endl; }
-  compute_TE(TE, X, Y, lookBack, "Correlation",0.75);
-  if(VERBOSE){ cout<<"Correlation X,Y: "<<TE<<endl; }
-  compute_TE(TE, X, Y, lookBack, "Correlation",1);
-  if(VERBOSE){ cout<<"Correlation X,Y: "<<TE<<endl; }
-  compute_TE(TE, X, Y, lookBack, "Direct");
-  if(VERBOSE){ cout<<"Direct X,Y: "<<TE<<endl; }
-  if(VERBOSE){ cout<<"-------------------"<<endl; }
-*/
+// compute_TE(TE, X, Y, lookBack, "Correlation",0.55);
+// if(VERBOSE){ cout<<"Correlation X,Y: "<<TE<<endl; }
+// compute_TE(TE, X, Y, lookBack, "Correlation",0.65);
+// if(VERBOSE){ cout<<"Correlation X,Y: "<<TE<<endl; }
+//  compute_TE(TE, X, Y, lookBack, "Correlation",0.75);
+//  if(VERBOSE){ cout<<"Correlation X,Y: "<<TE<<endl; }
+//  compute_TE(TE, X, Y, lookBack, "Correlation",1);
+//  if(VERBOSE){ cout<<"Correlation X,Y: "<<TE<<endl; }
+//  compute_TE(TE, X, Y, lookBack, "Direct");
+//  if(VERBOSE){ cout<<"Direct X,Y: "<<TE<<endl; }
+//  if(VERBOSE){ cout<<"-------------------"<<endl; }
+
   return SUCCESS;
 
 }
+*/
