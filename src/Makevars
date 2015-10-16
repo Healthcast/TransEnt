@@ -1,4 +1,17 @@
-PKG_CPPFLAGS = -I../ann_1.1.2/include
+PKG_CPPFLAGS = -Iann_1.1.2/include
 
-PKG_LIBS = -L$ ../ann_1.1.2/lib -lANN -lboost_program_options -lstdc++
+PKG_LIBS = -L$ ann_1.1.2/lib -lANN -lboost_program_options -lstdc++
+
+OBJECTS= RcppExports.o compute_TE.o
+
+all: before $(SHLIB)
+
+before: annLib
+
+
+#.PHONY: all annLib 
+#all: annLib
+annLib:
+	(cd ann_1.1.2/src; make; make clean)
+#$(MAKE) -C "ann_1.1.2/src"
 

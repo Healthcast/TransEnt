@@ -334,38 +334,46 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
       if(tmpdist>kdist){ kdist=tmpdist; }
     }
     if(xdistXKY==0){
-	  printf("x (XKY) crashing at %d, %d \n\t\n",i,idx);
-	  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[i][j]); }
-	  printf("\n\t\n");
-	  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[idx][j]); }
-	  printf("\n\t\n");
+	  if(DEBUG){
+		  printf("x (XKY) crashing at %d, %d \n\t\n",i,idx);
+		  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[i][j]); }
+		  printf("\n\t\n");
+		  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[idx][j]); }
+		  printf("\n\t\n");
+	  }
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
 	if(xdistXK==0){
-	  printf("x (XK) crashing at %d, %d \n\t\n",i,idx);
-	  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[i][j]); }
-	  printf("\n\t\n");
-	  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[idx][j]); }
-	  printf("\n\t\n");
+	  if(DEBUG){
+		  printf("x (XK) crashing at %d, %d \n\t\n",i,idx);
+		  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[i][j]); }
+		  printf("\n\t\n");
+		  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[idx][j]); }
+		  printf("\n\t\n");
+	  }
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
 	if(kydist==0){
-	  printf("ky crashing at %d, %d \n\t\n",i,idx);
-	  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[i][j]); }
-	  printf("\n\t\n");
-	  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[idx][j]); }
-	  printf("\n\t\n");
+		  if(DEBUG){
+		  printf("ky crashing at %d, %d \n\t\n",i,idx);
+		  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[i][j]); }
+		  printf("\n\t\n");
+		  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[idx][j]); }
+		  printf("\n\t\n");
+	  }
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
 	if(kdist==0){
-	  printf("k crashing at %d, %d \n\t\n",i,idx);
-	  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[i][j]); }
-	  printf("\n\t\n");
-	  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[idx][j]); }
-	  printf("\n\t\n");
+	  if(DEBUG){
+		  printf("k crashing at %d, %d \n\t\n",i,idx);
+		  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[i][j]); }
+		  printf("\n\t\n");
+		  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[idx][j]); }
+		  printf("\n\t\n");
+	  }
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
@@ -499,9 +507,9 @@ int foo=0;
 	// if cntXKY is zero, counts in other cnts have to be zero as well
 	if(cntXKY != 0)														// error checking
 	{
-	  if(cntKY == 0)	printf("cntKY is Zero!!!\n");
-	  if(cntXK == 0)	printf("cntXK is Zero!!!\n");
-	  if(cntK == 0)		printf("cntK is Zero!!!\n");
+	  if(cntKY == 0 && DEBUG)	printf("cntKY is Zero!!!\n");
+	  if(cntXK == 0 && DEBUG)	printf("cntXK is Zero!!!\n");
+	  if(cntK == 0 && DEBUG)	printf("cntK is Zero!!!\n");
 	}
 	// if cntXKY is zero the log(0) is undefined so do not add anything
 	if(cntXKY != 0)
