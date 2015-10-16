@@ -94,14 +94,14 @@ int MakeSpaces(const vector<double>&X,const vector<double>&Y,int embedding,bool 
 	       ANNkd_tree* &xkykdTree,ANNkd_tree* &kykdTree,
 	       ANNkd_tree* &xkkdTree,ANNkd_tree* &kkdTree)
 {
-  if(DEBUG)
+/*  if(DEBUG)
   {
      pFilexky = fopen("xky.space","w");
      pFilex   = fopen("x.space","w");
      pFileky  = fopen("ky.space","w");
      pFilexk  = fopen("xk.space","w");
      pFilek   = fopen("k.space","w");
-  }
+  }*/
   int maxPts =  X.size()+1;						   //max number of points
   int nPts   =  0;
   int dimxky =  embedding + 2,
@@ -117,24 +117,24 @@ int MakeSpaces(const vector<double>&X,const vector<double>&Y,int embedding,bool 
   for(int i=embedding;i<X.size();i++){
 	if(i>Y.size())	break;
     int t=0;
-    if(DEBUG)	fprintf(pFilex,"%f\n",X[i]);
-    xkyPts[nPts][t]=X[i];if(DEBUG)	fprintf(pFilexky,"%f,",X[i]);
-    xkPts[nPts][t]=X[i];if(DEBUG)	fprintf(pFilexk,"%f,",X[i]);
+//    if(DEBUG)	fprintf(pFilex,"%f\n",X[i]);
+    xkyPts[nPts][t]=X[i];//if(DEBUG)	fprintf(pFilexky,"%f,",X[i]);
+    xkPts[nPts][t]=X[i];//if(DEBUG)	fprintf(pFilexk,"%f,",X[i]);
     t++;
     for(int j=1;j<=embedding;j++){//k
-      xkyPts[nPts][t]=X[i-j];if(DEBUG)	fprintf(pFilexky,"%f,",X[i-j]);
-      xkPts[nPts][t]=X[i-j];if(DEBUG)	fprintf(pFilexk,"%f,",X[i-j]);
-      kyPts[nPts][t-1]=X[i-j];if(DEBUG)	fprintf(pFileky,"%f,",X[i-j]);
-      kPts[nPts][t-1]=X[i-j];if(DEBUG)	fprintf(pFilek,"%f,",X[i-j]);
+      xkyPts[nPts][t]=X[i-j];//if(DEBUG)	fprintf(pFilexky,"%f,",X[i-j]);
+      xkPts[nPts][t]=X[i-j];//if(DEBUG)	fprintf(pFilexk,"%f,",X[i-j]);
+      kyPts[nPts][t-1]=X[i-j];//if(DEBUG)	fprintf(pFileky,"%f,",X[i-j]);
+      kPts[nPts][t-1]=X[i-j];//if(DEBUG)	fprintf(pFilek,"%f,",X[i-j]);
       t++;
     }
-    xkyPts[nPts][t]=Y[i-1];if(DEBUG)	fprintf(pFilexky,"%f,",Y[i-1]);
-    kyPts[nPts][t-1]=Y[i-1];if(DEBUG)	fprintf(pFileky,"%f,",Y[i-1]);
+    xkyPts[nPts][t]=Y[i-1];//if(DEBUG)	fprintf(pFilexky,"%f,",Y[i-1]);
+    kyPts[nPts][t-1]=Y[i-1];//if(DEBUG)	fprintf(pFileky,"%f,",Y[i-1]);
     nPts++;
-    if(DEBUG)	fprintf(pFilexky,"\n");
-    if(DEBUG)	fprintf(pFilexk,"\n");
-    if(DEBUG)	fprintf(pFileky,"\n");
-    if(DEBUG)	fprintf(pFilek,"\n");
+//    if(DEBUG)	fprintf(pFilexky,"\n");
+//    if(DEBUG)	fprintf(pFilexk,"\n");
+//    if(DEBUG)	fprintf(pFileky,"\n");
+//    if(DEBUG)	fprintf(pFilek,"\n");
   }
   if(safetyChk)
 	  safetyCheck(X,Y,embedding,xkyPts,kyPts,xkPts,kPts,nPts);
@@ -211,7 +211,7 @@ int countByDistanceView(ANNkd_tree* kdTree, ANNpoint Pt, double Distance)
                 NULL,
                 NULL,
                 0);
-  if(DEBUG)	printf("dist: %f cnt: %d\n",Distance,cnt);
+//  if(DEBUG)	printf("dist: %f cnt: %d\n",Distance,cnt);
   ANNidxArray    nnIdx = new ANNidx[cnt];    // allocate near neigh indices
   ANNdistArray    dists = new ANNdist[cnt];    // allocate near neighbor dists
   cnt= kdTree->annkFRSearch(Pt,
@@ -221,10 +221,10 @@ int countByDistanceView(ANNkd_tree* kdTree, ANNpoint Pt, double Distance)
                 dists,
                 0);
   if(DEBUG)
-  for(int i=0;i<cnt;i++){
-	  printf("%d of %d: %f dist %f pindx %d\n",i,cnt,abs(dists[i]-Distance),dists[i],nnIdx[i]);
-  }
-  if(DEBUG)	printf("-----------\n");
+//  for(int i=0;i<cnt;i++){
+//	  printf("%d of %d: %f dist %f pindx %d\n",i,cnt,abs(dists[i]-Distance),dists[i],nnIdx[i]);
+//  }
+//  if(DEBUG)	printf("-----------\n");
 
   return cnt;
 }
@@ -239,12 +239,12 @@ int countByDistance(ANNkd_tree* kdTree, ANNpoint Pt, double Distance)
 								NULL,
 								0);					// error bound
 
-  if(DEBUG){
+/*  if(DEBUG){
 	  printf("cnt %d\n",cnt);
 	  int fooCnt = countByDistanceView(kdTree, Pt, Distance);
 	  if(cnt != fooCnt)
 		  printf("cnt not match\n");
-  }
+  }*/
 
   return cnt;
 }
@@ -334,46 +334,46 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
       if(tmpdist>kdist){ kdist=tmpdist; }
     }
     if(xdistXKY==0){
-	  if(DEBUG){
+	  /*if(DEBUG){
 		  printf("x (XKY) crashing at %d, %d \n\t\n",i,idx);
 		  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[i][j]); }
 		  printf("\n\t\n");
 		  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[idx][j]); }
 		  printf("\n\t\n");
-	  }
+	  }*/
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
 	if(xdistXK==0){
-	  if(DEBUG){
+	  /*if(DEBUG){
 		  printf("x (XK) crashing at %d, %d \n\t\n",i,idx);
 		  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[i][j]); }
 		  printf("\n\t\n");
 		  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[idx][j]); }
 		  printf("\n\t\n");
-	  }
+	  }/*
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
 	if(kydist==0){
-		  if(DEBUG){
+	  /*if(DEBUG){
 		  printf("ky crashing at %d, %d \n\t\n",i,idx);
 		  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[i][j]); }
 		  printf("\n\t\n");
 		  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[idx][j]); }
 		  printf("\n\t\n");
-	  }
+	  }*/
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
 	if(kdist==0){
-	  if(DEBUG){
+	  /*if(DEBUG){
 		  printf("k crashing at %d, %d \n\t\n",i,idx);
 		  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[i][j]); }
 		  printf("\n\t\n");
 		  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[idx][j]); }
 		  printf("\n\t\n");
-	  }
+	  }*/
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
@@ -399,9 +399,9 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
     cntK += digamma(fooCnt);
     //avD2 += fooCnt; // DEBUG
     // if(i>2) break; // DEBUG
-    if(DEBUG) printf("npts %d\n",i);
+//    if(DEBUG) printf("npts %d\n",i);
   }
-  if(DEBUG) printf("av dist: %f\n",avDist/nPts);
+//  if(DEBUG) printf("av dist: %f\n",avDist/nPts);
   // The transfer entropy is the difference of the two mutual informations
   // If we define  digK = digamma(k),  digN = digamma(nPts); then the
   // Kraskov (2004) estimator for MI gives
@@ -488,7 +488,7 @@ double TE_generalize_correlation_sum(int nPts, int k, int embedding,
 									 ANNpointArray		&kPts,
 									 double eDistance)
 {
-  if(DEBUG) printf("dist: %f\n",eDistance);
+//  if(DEBUG) printf("dist: %f\n",eDistance);
   int dimxky =  embedding+2,											// dimensions of different spaces
    	  dimky  =  embedding+1,
 	  dimxk  =  embedding+1,
@@ -498,25 +498,25 @@ double TE_generalize_correlation_sum(int nPts, int k, int embedding,
 		  Total=0;														// for summing up log of cnts
 int foo=0;
   for(int i=0;i<nPts;i++){
-	if(DEBUG)	printf("dist %f\n",eDistance);
+//	if(DEBUG)	printf("dist %f\n",eDistance);
 	cntXKY = countByDistance(xkykdTree, xkyPts[i], eDistance);// counts of points in XKY space within eDistance from point i
 	cntKY  = countByDistance( kykdTree,  kyPts[i], eDistance);// counts of points in KY space within eDistance from point i
 	cntXK  = countByDistance( xkkdTree,  xkPts[i], eDistance);// counts of points in XK space within eDistance from point i
 	cntK   = countByDistance(  kkdTree,   kPts[i], eDistance);// counts of points in K space within eDistance from point i
 
 	// if cntXKY is zero, counts in other cnts have to be zero as well
-	if(cntXKY != 0)														// error checking
+	/*if(cntXKY != 0 && DEBUG)				  // error checking
 	{
-	  if(cntKY == 0 && DEBUG)	printf("cntKY is Zero!!!\n");
-	  if(cntXK == 0 && DEBUG)	printf("cntXK is Zero!!!\n");
-	  if(cntK == 0 && DEBUG)	printf("cntK is Zero!!!\n");
-	}
+	  if(cntKY == 0)	printf("cntKY is Zero!!!\n");
+	  if(cntXK == 0)	printf("cntXK is Zero!!!\n");
+	  if(cntK  == 0)	printf("cntK is Zero!!!\n");
+	}*/
 	// if cntXKY is zero the log(0) is undefined so do not add anything
 	if(cntXKY != 0)
 	  Total+= log2((cntXKY*cntK)/(cntXK*cntKY));
 	if(cntXKY==0) foo++;
   }
-  if(DEBUG) printf("%d zeros\n",foo);
+//  if(DEBUG) printf("%d zeros\n",foo);
   // calculating TE:
   double TE = TE = Total/nPts;
   return TE;
@@ -539,7 +539,7 @@ int foo=0;
  * @return		SUCCESS/ERORR code
  */
 int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, int k, string method, double epsDistance=-1, bool safetyChk=false){
-  if(DEBUG)	printf("%f\n",epsDistance);
+//  if(DEBUG)	printf("%f\n",epsDistance);
   if( method != "MI_diff" 	&& method != "mi_diff" &&
 /*    method != "Direct"  	&& method != "direct"  */
       method != "Correlation" 	&& method != "correlation")
@@ -576,7 +576,7 @@ int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, in
   {
 	if (epsDistance == -1)
 		epsDistance = compute_avg_distance_MI_diff(nPts, k, xkykdTree, xkyPts);
-	if(DEBUG) printf("avg distance: %f\n",epsDistance);
+//	if(DEBUG) printf("avg distance: %f\n",epsDistance);
     TE =    TE_generalize_correlation_sum(nPts, k, embedding, xkykdTree, kykdTree, xkkdTree, kkdTree,    xkyPts, kyPts, xkPts, kPts, epsDistance);
   }
 
