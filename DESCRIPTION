@@ -5,11 +5,11 @@ Version: 1.0
 Date: TODO
 Author: Ghazaleh Haratinezhad Torbati, Glenn Lawyer
 Maintainer: Ghazaleh Haratinezhad Torbati <ghazale.hnt@gmail.com>, Glenn Lawyer <lawyer@mpi-inf.mpg.de>
-Description: TODO
-License: GPL (>= 2)
+Description: TODO TODO TODO.
+License: GPL (>= 2) | file LICENSE
 Imports: Rcpp (>= 0.11.6)
 LinkingTo: Rcpp
 URL: https://github.com/Healthcast/TransEnt
-NeedsCompilation: yes?
+NeedsCompilation: yes
 Repository: TODO
 Date/Publication: TODO
