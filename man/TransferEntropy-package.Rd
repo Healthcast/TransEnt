@@ -6,29 +6,15 @@
 }
 \description{
 \packageDescription{TransferEntropy}
-cats are abetterthan dogs
+The main function \code{computeTE} calculate transfer entropy from one to another random process given a method from mentioned methods. 
 }
-\details{
 
-The DESCRIPTION file:
-\packageDESCRIPTION{TransferEntropy}
-I like dogs and cats adnd things
-
-lots of text
-\emph{some of it italic}
-\packageIndices{TransferEntropy}
-~~ An overview of how to use the package, including the most important functions ~~
-}
 \author{
 \packageAuthor{TransferEntropy}
-
 Maintainer: \packageMaintainer{TransferEntropy}
 }
+
 \references{
-~~ Literature or other references for background information ~~
-}
-\keyword{ package }
-\seealso{
-~~ Optional links to other man pages, e.g. ~~
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
+Estimating mutual information. Alexander Kraskov, Harald Stoegbauer, Peter Grassberger. 2004
+A Recipe for the Estimation of Information Flow in a Dynamical System. Deniz Gencaga, Kevin H. Knuth, William B. Rossow. 2015.
 }
