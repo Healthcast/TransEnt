@@ -5,7 +5,7 @@ Version: 1.0
 Date: TODO
 Author: Ghazaleh Haratinezhad Torbati, Glenn Lawyer
 Maintainer: Ghazaleh Haratinezhad Torbati <ghazale.hnt@gmail.com>, Glenn Lawyer <lawyer@mpi-inf.mpg.de>
-Description: This package provides two estimation method for calculating transfer entropy between two continuous-valued random variables. One estimate transfer entropy through estimating mutual informatione and then calculating transfer entropy as difference of mutual information. Mutual information is estimated using the Kraskov method, which builds on a nearest-neighbor framework (see package references). The second estimation method estimate transfer entropy via the a generalized correlation sum.
+Description: This package allows the calculation of the transfer entropy between two continuous valued random variables. Two estimation methods are provided. The first calculates transfer entropy as the difference of mutual information. Mutual information is estimated using the Kraskov method, which builds on a nearest-neighbor framework (see package references). The second estimation method estimate transfer entropy via the a generalized correlation sum.
 License: GPL (>= 2) | file LICENSE
 Imports: Rcpp (>= 0.11.6)
 LinkingTo: Rcpp

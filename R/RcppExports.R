@@ -3,10 +3,11 @@
 
 #' Estimate Transfer Entropy.
 #'
-#' \code{ComputeTE} Estimate the Transfer Entropy (TE) from one random process to a second process.
+#' \code{ComputeTE} Estimate the Transfer Entropy (TE) from one continuous-valued random process to a second process.
 #'
-#' A function to calculate Transfer Entropy from random process \code{Y} to random process \code{X}. The definition of TE assumes \code{X} is an Markov process. The  \code{embedding} dimension should be chosen to match the delay of the Markov process. The TE measures the additional amount of information \code{Y} contains about \code{X} over the information contained in the Markov embedding.
-#' Two \code{methods} for estimating TE are provided. The first is based on the mutual information distance \code{MI(X_i+1 | X^{(e) },Y_i) - MI(X_i+1 | X^{(e)} )}, where \code{e} is the embedding dimension. This approach follows directly from the definition of the TE. Mutual information is estimated using the \code{k}-nearest neighbor approach suggested by Krasvok.
+#' A function to calculate Transfer Entropy from random process \code{Y} to random process \code{X}. The TE, introduced by Schreiber in 2000, extends the concept of mutual information to provide a direction-sensitive measure of information flow between two time series. Formally, the transfer entropy from time series \code{Y} to \code{X} is given by \code{T_{Y \rightarrow X} = \sum p(x_{n+1},x_n^{(k)},y_n^{(l)}) log \frac{p(x_{n+1} \mid x_n^{(k)}, y_n^{(l)})}{p(x_{n+1} \mid x_n^{(k)})}} where \code{x_{n+1}} is the value of \code{X} at time \code{n+1}, and \code{x_n^{(k)}} (\code{y_n^{(l)}}) is the \code{k} (\code{l}) lagged values of \code{X} (\code{Y}) at time \code{n}.
+#' The definition of TE assumes \code{X} is an Markov process. The  \code{embedding} dimension should be chosen to match the delay of the Markov process. The TE measures the additional amount of information \code{Y} contains about \code{X} over the information contained in the Markov embedding.
+#' Two methods for estimating TE are provided. The first is based on the mutual information distance \code{MI(X_i+1 | X^{(e) },Y_i) - MI(X_i+1 | X^{(e)} )}, where \code{e} is the embedding dimension. This approach follows directly from the definition of the TE. Mutual information is estimated using the k-nearest neighbor approach suggested by Krasvok.
 #' The second method is based on the generalized correlation sum. 
 #'
 #' Things can go wrong in several ways. First, the random processes must meet the assumption of the TE. That is, \code{X} must represent some form of Markov process whose probability distribution may also be influenced by \code{Y}. A more subtle error can occur when multiple points in \code{X^(k)} (or some of its subspaces) have identical coordinates. This can lead to several points which have identical distance to a query point, which violates the assumptions of the Kraskov estimator, causing it to throw an error. The solution in this case is to add some small noise to the measurements \code{X} prior to computing TE.
@@ -14,10 +15,10 @@
 #' @param X Numeric vector, Transfer Entropy is calculated to random process X 
 #' @param Y Numeric vector, Transfer Entropy is calculated from random process Y
 #' @param embedding Numeric, The embedding dimension. Must be positive integer
-#' @param k Numeric, The k'th neighbor. Must be positive integer. Kraskov suggests a value in (1,3).
 #' @param method String, The method to be used to estimate TE from ("MI_dif","Correlation")
+#' @param k Numeric, The k'th neighbor used by the Kraskov estimator. Must be positive integer. Kraskov suggests a value in (1,3)
 #' @param epsDistace Numeric, The distance used for measuring TE in Correlation method, by default it is the average distance calculated in XKY
-#' @param safetyCheck Logical, For computing TE using "mi_diff" method the data need to be noisy otherwise a crach might happen. This parameter can check if there are any idetical points in the spaces made for this use.
+#' @param safetyCheck Logical, For computing TE using "mi_diff" method the data need to be noisy otherwise a crach might happen. This parameter can check if there are any idetical points in the spaces made for this use
 #' @return Numeric, The estimated transfer entropy
 #' 
 #' @family TODO arbitrary
@@ -36,14 +37,14 @@
 #' }
 #' ## Compute the TE from X to Y 
 #' ## and from Y to X
-#' ComputeTE(X,Y,3,1,"MI_diff")  ## should be circa 0.15
-#' ComputeTE(Y,X,3,1,"MI_diff")  ## should be near zero
-#' ComputeTE(X,Y,1,1,"Correlation")
-#' ComputeTE(Y,X,1,1,"Correlation")
-#' ComputeTE(X,Y,3,1,"Correlation",0.4)
-#' ComputeTE(Y,X,3,1,"Correlation",0.4)
+#' computeTE(X,Y,3,1,"MI_diff")  ## should be circa 0.15
+#' computeTE(Y,X,3,1,"MI_diff")  ## should be circa zero
+#' computeTE(X,Y,1,1,"Correlation")
+#' computeTE(Y,X,1,1,"Correlation")
+#' computeTE(X,Y,3,1,"Correlation",0.4)
+#' computeTE(Y,X,3,1,"Correlation",0.4)
 
-ComputeTE <- function(X, Y, embedding, k, method="MI_diff", epsDistace=-1, safetyCheck=FALSE) {
+computeTE <- function(X, Y, embedding, k, method="MI_diff", epsDistace=-1, safetyCheck=FALSE) {
   methods = c("correlation","mi_diff")
   method = charmatch(tolower(method),methods)
   if (is.na(method) )
@@ -65,6 +66,6 @@ ComputeTE <- function(X, Y, embedding, k, method="MI_diff", epsDistace=-1, safet
 
 
 ## WARNING if you want to extend the codebase !!
-## The algorithms used here assume nearest neighbors are determined using the max norm. We implement the nearest neigbhor search using the ANN (Approximate Nearest Neighbor) library. ANN is set to use the max norm by adjusting some variables in the library's header files. Keep this in mind if you choose to extend this library
+## The algorithms used here assume nearest neighbors are determined using the max norm. We implement the nearest neigbhor search using the ANN (Approximate Nearest Neighbor) library. ANN uses Euclidian distance by default; using the max norm requires adjusting some variables in the library's header files. Keep this in mind if you choose to extend this library.
 
 
