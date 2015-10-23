@@ -525,8 +525,7 @@ int foo=0;
 /**
  * @brief 		Compute estimation of Transfer Entropy between two random process
  * @details 	Compute_TE is a function to compute Transfer Entropy given a method
- * 				(Direct, MI_diff [Mutual Information difference] and, correlation)
- *	 			TODO: should I add more detail?
+ * 				(Direct, MI_diff [Mutual Information difference] and, correlation)S
  *
  * @param[out]	TE The estimated transfer entropy
  * @param[in]	X Transfer Entropy is calculated to random process X (with noise)
@@ -543,7 +542,7 @@ int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, in
   if( method != "MI_diff" 	&& method != "mi_diff" &&
 /*    method != "Direct"  	&& method != "direct"  */
       method != "Correlation" 	&& method != "correlation")
-	{ // TODO! Correct this message
+	{ 
 	  throw invalid_argument("Method not specified correctly. Please choose one of the following. (\"MI_diff\", \"Correlation\")");
 	  return -1;//error
 	}
