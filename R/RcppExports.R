@@ -21,8 +21,6 @@
 #' @param safetyCheck Logical, For computing TE using "mi_diff" method the data need to be noisy otherwise a crach might happen. This parameter can check if there are any idetical points in the spaces made for this use
 #' @return Numeric, The estimated transfer entropy
 #' 
-#' @family TODO arbitrary
-#' @seealso TODO arbitrary
 #' @aliases te transferentropy transfer-entropy
 #' 
 #' @examples
