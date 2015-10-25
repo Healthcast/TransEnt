@@ -5,12 +5,29 @@
 #'
 #' \code{ComputeTE} Estimate the Transfer Entropy (TE) from one continuous-valued random process to a second process.
 #'
-#' A function to calculate Transfer Entropy from random process \code{Y} to random process \code{X}. The TE, introduced by Schreiber in 2000, extends the concept of mutual information to provide a direction-sensitive measure of information flow between two time series. Formally, the transfer entropy from time series \code{Y} to \code{X} is given by \code{T_{Y \rightarrow X} = \sum p(x_{n+1},x_n^{(k)},y_n^{(l)}) log \frac{p(x_{n+1} \mid x_n^{(k)}, y_n^{(l)})}{p(x_{n+1} \mid x_n^{(k)})}} where \code{x_{n+1}} is the value of \code{X} at time \code{n+1}, and \code{x_n^{(k)}} (\code{y_n^{(l)}}) is the \code{k} (\code{l}) lagged values of \code{X} (\code{Y}) at time \code{n}.
-#' The definition of TE assumes \code{X} is an Markov process. The  \code{embedding} dimension should be chosen to match the delay of the Markov process. The TE measures the additional amount of information \code{Y} contains about \code{X} over the information contained in the Markov embedding.
-#' Two methods for estimating TE are provided. The first is based on the mutual information distance \code{MI(X_i+1 | X^{(e) },Y_i) - MI(X_i+1 | X^{(e)} )}, where \code{e} is the embedding dimension. This approach follows directly from the definition of the TE. Mutual information is estimated using the k-nearest neighbor approach suggested by Krasvok.
+#' A function to calculate Transfer Entropy from random process \eqn{Y} to random process \eqn{X}. 
+#' The TE, introduced by Schreiber in 2000, extends the concept of mutual information to provide a 
+#' direction-sensitive measure of information flow between two time series. Formally, 
+#' the transfer entropy from time series \eqn{Y} to \eqn{X} is given by 
+#' \eqn{T_{Y \rightarrow X} = \sum p(x_{n+1},x_n^{(k)},y_n^{(l)}) log \frac{p(x_{n+1} \mid x_n^{(k)}, y_n^{(l)})}{p(x_{n+1} \mid x_n^{(k)})}} 
+#' where \eqn{x_{n+1}} is the value of \eqn{X} at time \eqn{n+1}, and \eqn{x_n^{(k)}} (\eqn{y_n^{(l)}}) is 
+#' the \eqn{k} (\eqn{l}) lagged values of \eqn{X} (\eqn{Y}) at time \eqn{n}.
+#' The definition of TE assumes \eqn{X} is an Markov process. The  \code{embedding} dimension should 
+#' be chosen to match the delay of the Markov process. The TE measures the additional amount of 
+#' information \eqn{Y} contains about \eqn{X} over the information contained in the Markov embedding.
+#' Two methods for estimating TE are provided. The first is based on the mutual information distance 
+#' \eqn{MI(X_i+1 | X^{(e) },Y_i) - MI(X_i+1 | X^{(e)} )}, where \eqn{e} is the embedding dimension. 
+#' This approach follows directly from the definition of the TE. Mutual information is estimated using 
+#' the k-nearest neighbor approach suggested by Krasvok.
 #' The second method is based on the generalized correlation sum. 
 #'
-#' Things can go wrong in several ways. First, the random processes must meet the assumption of the TE. That is, \code{X} must represent some form of Markov process whose probability distribution may also be influenced by \code{Y}. A more subtle error can occur when multiple points in \code{X^(k)} (or some of its subspaces) have identical coordinates. This can lead to several points which have identical distance to a query point, which violates the assumptions of the Kraskov estimator, causing it to throw an error. The solution in this case is to add some small noise to the measurements \code{X} prior to computing TE.
+#' Things can go wrong in several ways. First, the random processes must meet the assumption of the TE. 
+#' That is, \eqn{X} must represent some form of Markov process whose probability distribution may also be 
+#' influenced by \eqn{Y}. A more subtle error can occur when multiple points in \eqn{X^(k)} 
+#' (or some of its subspaces) have identical coordinates. This can lead to several points which have 
+#' identical distance to a query point, which violates the assumptions of the Kraskov estimator, causing it 
+#' to throw an error. The solution in this case is to add some small noise to the measurements \eqn{X} prior 
+#' to computing TE.
 #'
 #' @param X Numeric vector, Transfer Entropy is calculated to random process X 
 #' @param Y Numeric vector, Transfer Entropy is calculated from random process Y
