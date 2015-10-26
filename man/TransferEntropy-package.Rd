@@ -23,11 +23,11 @@ Maintainer: \packageMaintainer{TransferEntropy}
 }
 
 \references{
-Measuring Information Transfer. Thomas Schreibe. 2000.
+Measuring Information Transfer. Thomas Schreiber. 2000.
 
-Information transfer in continuous processes. A. Kaiser, T. Schreiber. 2002.
+Information Transfer in Continuous Processes. A. Kaiser, T. Schreiber. 2002.
 
-Estimating mutual information. Alexander Kraskov, Harald Stoegbauer, Peter Grassberger. 2004.
+Estimating Mutual Information. Alexander Kraskov, Harald Stoegbauer, Peter Grassberger. 2004.
 
 A Recipe for the Estimation of Information Flow in a Dynamical System. Deniz Gencaga, Kevin H. Knuth, William B. Rossow. 2015.
 }
