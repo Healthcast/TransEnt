@@ -1,0 +1,4 @@
+PKG_CPPFLAGS = -Iann_1.1.2/include
+
+PKG_LIBS = -Lann_1.1.2_MS_Win32_bin -lANN.lib -lboost_program_options -lstdc++
+
