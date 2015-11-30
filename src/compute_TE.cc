@@ -21,10 +21,10 @@
  */
 #include <ANN/ANN.h>	// ANN declarations
 
-#include <boost/tokenizer.hpp>							// for reading cvd
-#include <boost/algorithm/string/trim.hpp>
+//#include <boost/tokenizer.hpp>							// for reading cvd
+//#include <boost/algorithm/string/trim.hpp>
 #include <boost/math/special_functions/digamma.hpp>
-#include "boost/program_options.hpp"  					// for parsing command line arguments
+//#include "boost/program_options.hpp"  					// for parsing command line arguments
 
 using namespace std;
 using namespace boost;
@@ -75,7 +75,7 @@ int safetyCheck(const vector<double>&X,const vector<double>&Y,int embedding,
 		}
 
 	}
-	for(int i=embedding;i<X.size();i++){
+	for(unsigned int i=embedding;i<X.size();i++){
 		for(int j=i+1;j<X.size();j++){
 			if(X[i]==X[j])
 			{
@@ -351,12 +351,12 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
 		  printf("\n\t\n");
 		  for(int j=0;j<dimxk;j++){ printf("%f\t",xkPts[idx][j]); }
 		  printf("\n\t\n");
-	  }/*
+	  }
 	  throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
 	  return -1;
 	}
 	if(kydist==0){
-	  /*if(DEBUG){
+	  if(DEBUG){
 		  printf("ky crashing at %d, %d \n\t\n",i,idx);
 		  for(int j=0;j<dimxky;j++){ printf("%f\t",xkyPts[i][j]); }
 		  printf("\n\t\n");
@@ -592,7 +592,7 @@ int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, in
   return SUCCESS;
 }
 
-void makeXY(string data,vector<double>&X,vector<double>&Y)
+/*void makeXY(string data,vector<double>&X,vector<double>&Y)
 {
 	ifstream input(data.c_str());
 	// Read the data from the csv file, X and Y should be the first and second columns of the file
@@ -611,7 +611,7 @@ void makeXY(string data,vector<double>&X,vector<double>&Y)
 	X.erase(X.begin()); // Using boost to read csv X[0] and Y[0] are null
 	Y.erase(Y.begin());
 	return;
-}
+}*/
 
 /*
 int main(int argc, char** argv)

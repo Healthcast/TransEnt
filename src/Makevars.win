@@ -1,4 +1,14 @@
-PKG_CPPFLAGS = -Iann_1.1.2/include
+PKG_CPPFLAGS = -Iann_1.1.2/include -I$(BOOSTLIB)  -static  -x c++
 
-PKG_LIBS = -Lann_1.1.2_MS_Win32_bin -lANN.lib -lboost_program_options -lstdc++
+PKG_LIBS = -Lann_1.1.2/lib -lANN -lstdc++ 
+
+OBJECTS= RcppExports.o compute_TE.o
+
+all: before $(SHLIB)
+
+before: annLib
+
+annLib:
+	(cd ann_1.1.2/src; make -f MakefileWin; make clean)
+#$(MAKE) -C "ann_1.1.2/src"
 
