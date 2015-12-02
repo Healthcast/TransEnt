@@ -54,6 +54,10 @@ OBJECTS = $(SOURCES:.cpp=.o)
 
 #-----------------------------------------------------------------------------
 # Make the library
+#
+# HELP IS NEEDED HERE! HOW DO I BUILD THE DLL IN WINDOWS?
+#
+#
 #-----------------------------------------------------------------------------
 all: $(LIBDIR)/$(ANNLIB)
 
