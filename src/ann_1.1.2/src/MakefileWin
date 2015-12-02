@@ -57,16 +57,15 @@ OBJECTS = $(SOURCES:.cpp=.o)
 #-----------------------------------------------------------------------------
 all: $(LIBDIR)/$(ANNLIB)
 
+## this version successfully builds a static library
+## but the static library is not a dll, so I cannot 
+## link to it!!
 $(LIBDIR)/$(ANNLIB): $(OBJECTS)
 	$(MAKELIB) $(ANNLIB) $(OBJECTS)
 	mv $(ANNLIB) $(LIBDIR)
 
-
-#	$(C++) $(DLLFLAGS) -o $(ANNLIB) $(OBJECTS)
-#	mv $(ANNLIB) $(LIBDIR)
-
-
-
+## This is where I try to make a dll, but I run into errors.
+## How should I modify this to build a dll?
 #$(LIBDIR)/$(ANNLIB): $(OBJECTS)
 #	$(C++) $(DLLFLAGS) -o cyg${LIBNAME}.dll \
 #    	-Wl,--out-implib=lib${LIBNAME}.dll.a \
@@ -75,6 +74,10 @@ $(LIBDIR)/$(ANNLIB): $(OBJECTS)
 #    	-Wl,--whole-archive $(OBJECTS) \
 #    	-Wl,--no-whole-archive
 
+## This failed for building the dll, so I tried adding the
+## extra W1 flags as indicated above
+#	$(C++) $(DLLFLAGS) -o $(ANNLIB) $(OBJECTS)
+#	mv $(ANNLIB) $(LIBDIR)
 
 #-----------------------------------------------------------------------------
 # Make object files
