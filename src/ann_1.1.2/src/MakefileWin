@@ -34,7 +34,7 @@ BASEDIR	= ..
 INCDIR	= $(BASEDIR)/include
 LIBDIR	= $(BASEDIR)/lib
 
-ANNLIB = libANN.a
+ANNLIB = libANN.dll.a
 #LIBNAME = ANN
 C++ = g++
 MAKELIB = ar ruv
@@ -44,8 +44,6 @@ DLLFLAGS = -shared
 SOURCES = ANN.cpp brute.cpp kd_tree.cpp kd_util.cpp kd_split.cpp \
 	kd_dump.cpp kd_search.cpp kd_pr_search.cpp kd_fix_rad_search.cpp \
 	bd_tree.cpp bd_search.cpp bd_pr_search.cpp bd_fix_rad_search.cpp \
-
-
 
 HEADERS = kd_tree.h kd_split.h kd_util.h kd_search.h \
 	kd_pr_search.h kd_fix_rad_search.h pr_queue.h pr_queue_k.h
@@ -77,6 +75,7 @@ $(LIBDIR)/$(ANNLIB): $(OBJECTS)
 # 	-Wl,--enable-auto-import \
 #    	-Wl,--whole-archive $(OBJECTS) \
 #    	-Wl,--no-whole-archive
+	mv $(ANNLIB) $(LIBDIR)
 
 ## This failed for building the dll, so I tried adding the
 ## extra W1 flags as indicated above
