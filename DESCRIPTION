@@ -2,7 +2,7 @@ Package: TransferEntropy
 Type: Package
 Title: The Transfer Entropy Package
 Version: 1.0
-Date: 2015-10-27
+Date: 2015-12-26
 Authors@R: c(
     person("Ghazaleh", "Haratinezhad Torbati", email = "ghazale.hnt@gmail.com", role = c("aut","cre")),
     person("Glenn", "Lawyer", email = "lawyer@mpi-inf.mpg.de", role = c("aut")) )
@@ -15,4 +15,4 @@ LinkingTo: Rcpp
 URL: https://github.com/Healthcast/TransEnt
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2015-10-27
+Date/Publication: 2015-12-26

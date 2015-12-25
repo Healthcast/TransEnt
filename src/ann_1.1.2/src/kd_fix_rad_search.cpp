@@ -23,6 +23,7 @@
 //----------------------------------------------------------------------
 
 #include "kd_fix_rad_search.h"			// kd fixed-radius search decls
+#include <iostream>
 
 //----------------------------------------------------------------------
 //	Approximate fixed-radius k nearest neighbor search
@@ -181,3 +182,4 @@ void ANNkd_leaf::ann_FR_search(ANNdist box_dist)
 	ANN_PTS(n_pts)						// increment points visited
 	ANNkdFRPtsVisited += n_pts;			// increment number of points visited
 }
+
