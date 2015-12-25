@@ -1,14 +1,12 @@
-PKG_CPPFLAGS = -Iann_1.1.2/include
+PKG_CPPFLAGS = -Iann_1.1.2/include 
 
-PKG_LIBS = -Lann_1.1.2/lib -lANN  -lstdc++
+PKG_LIBS = -lstdc++
 
-OBJECTS= RcppExports.o compute_TE.o
+SOURCES = ann_1.1.2/src/ANN.cpp ann_1.1.2/src/brute.cpp ann_1.1.2/src/kd_tree.cpp ann_1.1.2/src/kd_util.cpp	ann_1.1.2/src/kd_split.cpp ann_1.1.2/src/kd_dump.cpp ann_1.1.2/src/kd_search.cpp ann_1.1.2/src/kd_pr_search.cpp ann_1.1.2/src/kd_fix_rad_search.cpp ann_1.1.2/src/bd_tree.cpp ann_1.1.2/src/bd_search.cpp ann_1.1.2/src/bd_pr_search.cpp ann_1.1.2/src/bd_fix_rad_search.cpp
 
-all: before $(SHLIB)
+OBJECTS= RcppExports.o compute_TE.o $(SOURCES:.cpp=.o) 
 
-before: annLib
+all: $(SHLIB)
 
-annLib:
-	(cd ann_1.1.2/src; make; make clean)
-
-
+clean:
+	@rm -f $(OBJECTS)
