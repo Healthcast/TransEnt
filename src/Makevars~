@@ -1,4 +1,0 @@
-PKG_CPPFLAGS = -I../ann_1.1.2/include
-
-PKG_LIBS = -L$ ../ann_1.1.2/lib -lANN
-
