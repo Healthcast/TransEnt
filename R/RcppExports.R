@@ -47,15 +47,15 @@
 #' ## Create two linked random processes. Y is independent of X,
 #' ## while X is determined in part by the previous values of Y.
 #' for(i in 1:10000){
-#'   Y[i+1] <- 0.5*Y[i] + rnorm(1)
-#'   X[i+1] <- 0.6*X[i] + 0.5*Y[i] + rnorm(1)
+#'  Y[i+1] <- 0.6*Y[i] + rnorm(1)
+#'  X[i+1] <- 0.4*X[i] + 0.6*Y[i] + rnorm(1)
 #' }
-#' ## Compute the TE from X to Y 
-#' ## and from Y to X
-#' computeTE(X,Y,3,1,"MI_diff")  ## should be circa 0.15
+#' X <- X[101:10000]
+#' Y <- Y[101:10000]
+#' ## Compute the TE from Y to X
+#' computeTE(X,Y,3,1,"MI_diff")  ## should be circa 0.16
+#' ## and from X to Y
 #' computeTE(Y,X,3,1,"MI_diff")  ## should be circa zero
-#' computeTE(X,Y,1,1,"Correlation")
-#' computeTE(Y,X,1,1,"Correlation")
 #' computeTE(X,Y,3,1,"Correlation",0.4)
 #' computeTE(Y,X,3,1,"Correlation",0.4)
 
