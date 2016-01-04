@@ -1,18 +1,17 @@
 Package: TransferEntropy
 Type: Package
 Title: The Transfer Entropy Package
-Version: 1.1
-Date: 2015-12-29
-Authors@R: c(
-    person("Ghazaleh", "Haratinezhad Torbati", email = "ghazaleh@mpi-inf.mpg.de", role = c("aut","cre")),
-    person("Glenn", "Lawyer", email = "lawyer@mpi-inf.mpg.de", role = c("aut")) )
+Version: 1.2
+Date: 2016-01-01
+Author: ANN Library: David Mount, Sunil Arya (see src/ann_1.1.2/Copyright.txt). 
+	  Transfer Entropy Packge: Ghazaleh Haratinezhad Torbati, Glenn Lawyer.
 Maintainer: Ghazaleh Haratinezhad Torbati <ghazaleh@mpi-inf.mpg.de>
 Description: Estimates the transfer entropy from one time series to another, where each time series consists of continuous random variables. The transfer entropy is an extension of mutual information which takes into account the direction of information flow, under the assumption that the underlying processes can be described by a Markov model. Two estimation methods are provided. The first calculates transfer entropy as the difference of mutual information. Mutual information is estimated using the Kraskov method, which builds on a nearest-neighbor framework (see package references). The second estimation method estimate transfer entropy via the a generalized correlation sum.
 License: GPL (>= 2) | file LICENSE
 Depends: R (>= 3.0.0)
 Imports: Rcpp (>= 0.11.6)
-LinkingTo: Rcpp
+LinkingTo: Rcpp, BH
 URL: https://github.com/Healthcast/TransEnt
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2015-12-29
+Date/Publication: 2015-01-01
