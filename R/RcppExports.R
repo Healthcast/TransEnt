@@ -16,7 +16,7 @@
 #' be chosen to match the delay of the Markov process. The TE measures the additional amount of 
 #' information \eqn{Y} contains about \eqn{X} over the information contained in the Markov embedding.
 #' Two methods for estimating TE are provided. The first is based on the mutual information distance 
-#' \eqn{MI(X_i+1 | X^{(e) },Y_i) - MI(X_i+1 | X^{(e)} )}, where \eqn{e} is the embedding dimension. 
+#' \eqn{MI(X_{i+1} | X^{(e) },Y_i) - MI(X_{i+1} | X^{(e)} )}, where \eqn{e} is the embedding dimension. 
 #' This approach follows directly from the definition of the TE. Mutual information is estimated using 
 #' the k-nearest neighbor approach suggested by Krasvok.
 #' The second method is based on the generalized correlation sum. 
