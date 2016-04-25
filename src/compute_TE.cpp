@@ -52,6 +52,8 @@ const size_t ERROR_IN_COMMAND_LINE = 1;
 const size_t SUCCESS = 0;
 const size_t ERROR_UNHANDLED_EXCEPTION = 2;
 
+// dimensions of the different spaces
+int embedding, dimxky, dimky, dimxk, dimk;
 
 FILE *pFilexky, *pFilex, *pFileky, *pFilexk, *pFilek;
 
@@ -120,10 +122,6 @@ int MakeSpaces(const vector<double>&X,const vector<double>&Y,int embedding,bool 
  }*/
   int maxPts =  X.size()+1;						   //max number of points
   int nPts   =  0;
-  int dimxky =  embedding + 2,
-      dimky	 =  embedding + 1,
-      dimxk	 =  embedding + 1,
-      dimk   =  embedding;
 
   xkyPts = annAllocPts(maxPts, dimxky);				// allocate data points
   kyPts  = annAllocPts(maxPts, dimky);				// allocate data points
@@ -187,10 +185,10 @@ double findDistanceK(ANNkd_tree* kdTree,int k,ANNpoint	 Pt)
 
 ANNidx kthNeighbor(ANNkd_tree* kdTree,int k,ANNpoint	 Pt)
 {
-  ANNidxArray		nnIdx;								// near neighbor indices
-  ANNdistArray		dists;								// near neighbor distances
-  nnIdx = new ANNidx[k];								// allocate near neigh indices
-  dists = new ANNdist[k];								// allocate near neighbor dists
+  ANNidxArray		nnIdx;
+  ANNdistArray		dists;
+  nnIdx = new ANNidx[k];
+  dists = new ANNdist[k];
   // search
   kdTree->annkSearch(Pt,							// query point
                      k,									// number of near neighbors
@@ -199,7 +197,7 @@ ANNidx kthNeighbor(ANNkd_tree* kdTree,int k,ANNpoint	 Pt)
                      0);								// error bound
 
   ANNidx idx = nnIdx[k-1];
-  delete [] nnIdx;										// clean things up
+  delete [] nnIdx;
   delete [] dists;
   return idx;
 }
@@ -316,17 +314,12 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
                                         ANNpointArray    &xkPts,
                                         ANNpointArray    &kPts)
 {
-
-  // dimensions of the different spaces
-  int dimxky =  embedding + 2,
-      dimxk    =  embedding + 1;
-
   // variables to store the distance to the kth neighbor in different spaces
   double tmpdist,xdistXKY,xdistXK,kydist,kdist;
   // counters for summing the digammas of the point counts.
-  double cntX=0, cntX2=0, cntKY=0, cntK=0;
+  double cntX_XKY=0, cntX_XK=0, cntKY_XKY=0, cntK_XK=0;
   // temporary counters
-  int  fooCnt, barCnt;
+  int  Cnt1, Cnt2;
 
   //  double avDist=0,avD2=0; //DEBUG
   // For each point in the XKY  space,
@@ -341,6 +334,8 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
           tmpdist=abs(xkyPts[i][j] - xkyPts[idx][j]);
           if(tmpdist>kydist){ kydist=tmpdist; }
         }
+
+
       // and in the XK space
       idx=kthNeighbor(xkkdTree, k, xkPts[i]);
       xdistXK=abs(xkPts[i][0] - xkPts[idx][0]);
@@ -349,6 +344,8 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
           tmpdist=abs(xkPts[i][j] - xkPts[idx][j]);
           if(tmpdist>kdist){ kdist=tmpdist; }
         }
+
+
       if(xdistXKY==0){
           /*if(DEBUG){
                  printf("x (XKY) crashing at %d, %d \n\t\n",i,idx);
@@ -393,41 +390,39 @@ double TE_mutual_information_difference(int nPts, int k, int embedding,
           throw invalid_argument("There is a problem in the data. Please run the program with safety check.");
           return -1;
         }
+
       // Count the number of points in X subspace within these distances
       // since this is a 1-d space, ASSUMING faster by a loop than by
       // kd-tree lookups
-      fooCnt=0; barCnt=0;
+      Cnt1=0; Cnt2=0;
 
       for(unsigned int j=embedding;j<X.size();j++){
-          if( (abs(xkyPts[i][0] - X[j]) <= xdistXKY) && (abs(xkyPts[i][0] - X[j])!=0) ) fooCnt++;
-          if( (abs(xkPts[i][0]  - X[j]) <= xdistXK ) && (abs(xkPts[i][0]  - X[j])!=0) ) barCnt++;
+          if( (abs(xkyPts[i][0] - X[j]) <= xdistXKY) && (abs(xkyPts[i][0] - X[j])!=0) ) Cnt1++;
+          if( (abs(xkPts[i][0]  - X[j]) <= xdistXK ) && (abs(xkPts[i][0]  - X[j])!=0) ) Cnt2++;
         }
       //avDist += fooCnt; avD2 += barCnt; // DEBUG
-      if(fooCnt == 0) {fooCnt=1;}// Due to win32 overflow
-      if(barCnt == 0) {barCnt=1;}
-      cntX  += digamma(fooCnt); // and sum the digamma of the counts
-      cntX2 += digamma(barCnt);
+      if(Cnt1 == 0) {Cnt1=1;}// Due to win32 overflow
+      if(Cnt2 == 0) {Cnt2=1;}
+      cntX_XKY  += digamma(Cnt1); // and sum the digamma of the counts
+      cntX_XK   += digamma(Cnt2);
       // Count the number of points in the KY subspace, using the XKY distance:
       // and re-using fooCnt
-      fooCnt = countByDistanceView(kykdTree, kyPts[i], kydist);
-      if(fooCnt == 0) {fooCnt=1;}
-      cntKY += digamma(fooCnt); // and sum its digamma
-      //avDist += fooCnt;  // DEBUG
+      Cnt1 = countByDistanceView(kykdTree, kyPts[i], kydist);
+      if(Cnt1 == 0) {Cnt1=1;}
+      cntKY_XKY += digamma(Cnt1); // and sum its digamma
       // and in the K subspace, using the XK distance:
-      barCnt = countByDistance(kkdTree,  kPts[i],  kdist);
-      if(barCnt == 0) {barCnt=1;}//not good again overflow
-      cntK += digamma(barCnt);
-      //avD2 += fooCnt; // DEBUG
-      // if(i>2) break; // DEBUG
-      //    if(DEBUG) printf("npts %d\n",i);
+      Cnt2 = countByDistance(kkdTree,  kPts[i],  kdist);
+      if(Cnt2 == 0) {Cnt2=1;}//not good again overflow
+      cntK_XK += digamma(Cnt2);
     }
   //  if(DEBUG) printf("av dist: %f\n",avDist/nPts);
+
   // The transfer entropy is the difference of the two mutual informations
   // If we define  digK = digamma(k),  digN = digamma(nPts); then the
   // Kraskov (2004) estimator for MI gives
-  // TE = (digK - 1/k - (cntX + cntKY)/nPts + digN) - (digK - 1/k - (cntX2 + cntK)/nPts + digN)
+  // TE = (digK - 1/k - (cntX_XKY + cntKY_XKY)/nPts + digN) - (digK - 1/k - (cntX_XK + cntK_XK)/nPts + digN)
   // which simplifies to:
-  double TE = (cntX2 + cntK)/nPts - (cntX + cntKY)/nPts;
+  double TE = (cntX_XK + cntK_XK)/nPts - (cntX_XKY + cntKY_XKY)/nPts;
   return TE;
 }
 
@@ -547,7 +542,12 @@ double TE_generalize_correlation_sum(int nPts, int k, int embedding,
 * @param[in]   safetyCheck For computing TE using "mi_diff" method the data need to be noisy otherwise a crach might happen. This parameter can check if there are any idetical points in the spaces made for this use.
 * @return		SUCCESS/ERORR code
 */
-int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int embedding, int k, string method, double epsDistance=-1, bool safetyChk=false){
+int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int e, int k, string method, double epsDistance=-1, bool safetyChk=false){
+	embedding = e;
+	dimxky =  embedding + 2;
+	dimky  =  embedding + 1;
+	dimxk  =  embedding + 1;
+	dimk   =  embedding;
   //  if(DEBUG)	printf("%f\n",epsDistance);
   if( method != "MI_diff" 	&& method != "mi_diff" &&
       /*    method != "Direct"  	&& method != "direct"  */
