@@ -153,10 +153,6 @@ int MakeSpaces(const vector<double>&X,const vector<double>&Y,int embedding,bool 
   if(safetyChk)
     safetyCheck(X,Y,embedding,xkyPts,kyPts,xkPts,kPts,nPts);
   xkykdTree = new ANNkd_tree(xkyPts, nPts, dimxky);
-  for(int i=0;i<nPts;i++)
-    {
-
-    }
   kykdTree  = new ANNkd_tree(kyPts, nPts, dimky);
   xkkdTree  = new ANNkd_tree(xkPts, nPts, dimxk);
   kkdTree   = new ANNkd_tree(kPts, nPts, dimk);
@@ -241,6 +237,8 @@ int countByDistanceView(ANNkd_tree* kdTree, ANNpoint Pt, double Distance)
   //  }
   //  if(DEBUG)	printf("-----------\n");
 
+  delete [] nnIdx;
+  delete [] dists;
   return cnt;
 }
 
@@ -598,7 +596,8 @@ int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int e, int k, str
   return SUCCESS;
 }
 
-/*void makeXY(string data,vector<double>&X,vector<double>&Y)
+/*
+void makeXY(string data,vector<double>&X,vector<double>&Y)
 {
        ifstream input(data.c_str());
        // Read the data from the csv file, X and Y should be the first and second columns of the file
@@ -617,9 +616,9 @@ int compute_TE(double& TE, vector<double>&X, vector<double>&Y, int e, int k, str
        X.erase(X.begin()); // Using boost to read csv X[0] and Y[0] are null
        Y.erase(Y.begin());
        return;
-}*/
+}
 
-/*
+
 int main(int argc, char** argv)
 {
  bool VERBOSE= 0;

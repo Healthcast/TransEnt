@@ -1,8 +1,8 @@
 Package: TransferEntropy
 Type: Package
 Title: The Transfer Entropy Package
-Version: 1.2
-Date: 2016-01-01
+Version: 1.3
+Date: 2017-11-23
 Author: ANN Library: David Mount, Sunil Arya (see src/ann_1.1.2/Copyright.txt). 
 	  Transfer Entropy Packge: Ghazaleh Haratinezhad Torbati, Glenn Lawyer.
 Maintainer: Ghazaleh Haratinezhad Torbati <ghazalehnt@gmail.com>
