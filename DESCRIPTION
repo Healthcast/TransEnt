@@ -5,7 +5,7 @@ Version: 1.5
 Date: 2017-11-23
 Author: ANN Library: David Mount, Sunil Arya (see src/ann_1.1.2/Copyright.txt). 
 	  Transfer Entropy Packge: Ghazaleh Haratinezhad Torbati, Glenn Lawyer.
-Maintainer: Ghazaleh Haratinezhad Torbati <ghazalehnt@gmail.com>
+Maintainer: Ghazaleh Haratinezhad Torbati <ghazale.hnt@gmail.com>
 Description: Estimates the transfer entropy from one time series to another, where each time series consists of continuous random variables. The transfer entropy is an extension of mutual information which takes into account the direction of information flow, under the assumption that the underlying processes can be described by a Markov model. Two estimation methods are provided. The first calculates transfer entropy as the difference of mutual information. Mutual information is estimated using the Kraskov method, which builds on a nearest-neighbor framework (see package references). The second estimation method estimate transfer entropy via the a generalized correlation sum.
 License: GPL (>= 2) | file LICENSE
 Depends: R (>= 3.0.0)
